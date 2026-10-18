@@ -1,0 +1,107 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>GEOL2331 Environmental Geophysics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><style>
+/* Print-safe document style shared by lecture plans and handouts. Single light theme by design: these pages are printed and saved as PDF. */
+:root{
+  --paper:#FFFFFF;--bg:#F1F4F3;--ink:#16252A;--muted:#55686D;--line:#C9D3D3;--soft:#F4F7F6;
+  --accent:#1B6E8A;--accent-soft:#E2EEF2;--soil:#8C5A2E;--soil-soft:#F3E9DD;
+  --lec:#DCEBF1;--lec-ink:#175A70;--prac:#F2E4D3;--prac-ink:#7A4A1E;--act:#E4F0E2;--act-ink:#2C6A35;--brk:#E8ECEC;--brk-ink:#55686D;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);margin:0;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{max-width:900px;margin:0 auto;background:var(--paper);padding-inline:clamp(16px,5vw,56px);padding-block:36px 56px;box-shadow:0 0 0 1px var(--line)}
+h1,h2,h3,h4{line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:34px;letter-spacing:-.01em}
+h2{font-size:24px;margin-top:40px;padding-top:12px;border-top:3px solid var(--ink)}
+h3{font-size:19px;margin-top:26px;color:var(--accent)}
+h4{font-size:16px;margin-top:18px}
+p,li{max-width:74ch}
+p{margin:8px 0}
+ul,ol{padding-left:22px;margin:6px 0}
+li{margin:3px 0}
+a{color:var(--accent)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 6px}
+.lede{font-size:18px;color:var(--muted);margin-top:8px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.tbl{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:7px 10px;border:1px solid var(--line)}
+th{background:var(--soft);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+td.t{white-space:nowrap;font-variant-numeric:tabular-nums}
+.box{border:1px solid var(--line);border-radius:6px;padding:12px 16px;margin:14px 0;background:var(--soft)}
+.box>:first-child{margin-top:0}
+.box.key{background:var(--accent-soft);border-color:#B7D3DD}
+.box.why{background:var(--lec);border-color:#B9D6E2}
+.box.warn{background:var(--soil-soft);border-color:#E3CFB6}
+.box h4:first-child,.box h3:first-child{margin-top:0}
+.eq{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:19px;padding:6px 0;margin:4px 0}
+.eq small{font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:13px;color:var(--muted);margin-left:10px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;white-space:nowrap;vertical-align:1px}
+.tag.slide{background:var(--lec);color:var(--lec-ink)}
+.tag.board{background:#ECE6F5;color:#4F3A86}
+.tag.ask{background:var(--act);color:var(--act-ink)}
+.tag.lab{background:var(--prac);color:var(--prac-ink)}
+.tag.brk{background:var(--brk);color:var(--brk-ink)}
+figure{margin:14px 0}
+figure svg{display:block;width:100%;height:auto;max-width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.steps{list-style:none;padding:0;margin:10px 0;border-left:3px solid var(--line)}
+.steps>li{padding:6px 0 8px 14px;max-width:none;position:relative}
+.steps>li>.tag{margin-right:6px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:700px){.grid2{grid-template-columns:minmax(0,1fr)}h1{font-size:28px}}
+.flow{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.flow>div{flex:1 1 110px;border-radius:6px;padding:8px 10px;font-size:13px;line-height:1.3}
+.flow b{display:block;font-size:14px}
+.flow .l{background:var(--lec);color:var(--lec-ink)}.flow .p{background:var(--prac);color:var(--prac-ink)}.flow .b{background:var(--brk);color:var(--brk-ink)}
+.write{border:1px dashed #9AA9AC;border-radius:4px;min-height:70px;margin:6px 0 12px;background:#fff}
+.write.tall{min-height:130px}
+table.rec td{height:30px}
+.toc{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:15px;margin:14px 0}
+.nobreak{break-inside:avoid}
+@page{size:A4;margin:14mm 13mm}
+@media print{
+  html,body{background:#fff}
+  body{font-size:10.5pt}
+  .page{max-width:none;padding:0;box-shadow:none}
+  h2{font-size:16pt;margin-top:18pt;break-after:avoid}
+  h3,h4{break-after:avoid}
+  h1{font-size:22pt}
+  .box,figure,table,.steps>li,.write,.flow,.nobreak{break-inside:avoid}
+  tr{break-inside:avoid}
+  .toc,.noprint{display:none!important}
+  a{color:inherit;text-decoration:none}
+  .pb{break-before:page}
+  .tbl{overflow:visible}
+}
+</style>
+<style>
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:12px 0}
+.cards a{display:block;border:1px solid var(--line);border-radius:8px;padding:14px 16px;text-decoration:none;color:var(--ink);background:var(--soft)}
+.cards a b{display:block;font-size:18px;color:var(--accent)}
+.cards a span{font-size:14px;color:var(--muted)}
+</style></head><body><div class="page">
+<p class="eyebrow">GEOL2331 Environmental Geophysics · Durham University</p>
+<h1>Labs &amp; handouts</h1>
+<p class="lede">Interactive labs and handouts for the environmental weeks of the module.</p>
+<h2>Week 3 · Soil &amp; groundwater hydrology</h2>
+<div class="cards">
+<a href="Week3_Soil_Water_Lab.html"><b>Soil Water Lab</b><span>Interactive: rain on a soil profile, Darcy column</span></a>
+<a href="Week3_Handout.html"><b>Week 3 handout</b><span>Notes and lab worksheets</span></a>
+</div>
+<h2>Week 4 · Solutes &amp; conductivity</h2>
+<div class="cards">
+<a href="Week4_Salt_Clay_Current_Lab.html"><b>Salt, Clay &amp; Current</b><span>Interactive: conductivity meter, tracer column, water detective</span></a>
+<a href="Week4_Handout.html"><b>Week 4 handout</b><span>Notes and EC-pen practical worksheet</span></a>
+</div>
+<h2>Tips</h2>
+<ul>
+<li>The labs work best on a laptop or tablet. Phones work, but the charts are small.</li>
+<li>Nothing you do in a lab is saved. Write your numbers in your notebook or on the handout.</li>
+<li>To keep a handout: use your browser's Print and choose "Save as PDF". The handouts are formatted for A4.</li>
+</ul>
+</div></body></html>

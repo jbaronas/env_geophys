@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Soil Water Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#EDF1F0;--surface:#FFFFFF;--surface2:#F4F7F6;--ink:#17262B;--muted:#5A6D72;--line:#CBD6D6;--grid:#E3E9E9;
+  --accent:#1B6E8A;--accent-ink:#FFFFFF;--soil:#8C5A2E;--soil-soft:#E8D9C6;--water:#2F86B5;--water-soft:#C6E0EE;
+  --warn:#A8581A;--warn-soft:#F6E3CF;--good:#2E7D4F;--good-soft:#DCEFE3;
+  --c1:#1B6E8A;--c2:#C0632B;--c3:#6B5BA8;--c4:#2E7D4F;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1618;--surface:#152125;--surface2:#1A292E;--ink:#E2ECEE;--muted:#93A7AC;--line:#2B3D43;--grid:#1E2E33;
+    --accent:#5DB3D3;--accent-ink:#0E1618;--soil:#C99260;--soil-soft:#3A2C1F;--water:#5DB3D3;--water-soft:#1C4252;
+    --warn:#E6A160;--warn-soft:#3B2A1A;--good:#6BC08E;--good-soft:#1D3527;
+    --c1:#5DB3D3;--c2:#E58A55;--c3:#AFA2EC;--c4:#6BC08E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1618;--surface:#152125;--surface2:#1A292E;--ink:#E2ECEE;--muted:#93A7AC;--line:#2B3D43;--grid:#1E2E33;
+  --accent:#5DB3D3;--accent-ink:#0E1618;--soil:#C99260;--soil-soft:#3A2C1F;--water:#5DB3D3;--water-soft:#1C4252;
+  --warn:#E6A160;--warn-soft:#3B2A1A;--good:#6BC08E;--good-soft:#1D3527;
+  --c1:#5DB3D3;--c2:#E58A55;--c3:#AFA2EC;--c4:#6BC08E;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;margin:0}
+.wrap{max-width:1300px;margin:0 auto;padding-inline:20px;padding-block:20px 48px}
+h1,h2,h3{font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;text-wrap:balance;margin:0}
+h1{font-size:34px;line-height:1.1;font-weight:700}
+h2{font-size:20px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+.eyebrow{font-size:14px;color:var(--muted);margin:0 0 6px}
+.lede{max-width:75ch;color:var(--muted);margin:8px 0 0}
+.m{font-family:"Cambria Math","STIX Two Math","Times New Roman",Georgia,serif;font-style:italic;font-size:1.08em}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;border-bottom:1px solid var(--line)}
+.tabs button{font:600 16px "Source Sans 3",system-ui,sans-serif;color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;padding:8px 4px 10px;margin-right:14px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs button:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pane{margin-top:20px;display:flex;flex-direction:column;gap:16px}
+[hidden]{display:none!important}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:900px){.intro{grid-template-columns:minmax(0,1fr)}}
+.bg summary{cursor:pointer;font-weight:700;font-size:20px}
+.bg p{max-width:80ch;margin:8px 0 0}
+.steps{margin:8px 0 0;padding-left:24px;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{font-weight:700;color:var(--accent)}
+.lab{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
+.labB{display:grid;grid-template-columns:300px minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1100px){.labB{grid-template-columns:300px minmax(0,1fr)}.labB>.side{grid-column:1/-1}}
+@media (max-width:760px){.lab,.labB{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.controls{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label,.lbl{font-size:15px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:8px}
+.field output{font:500 14px "JetBrains Mono",ui-monospace,monospace;color:var(--accent)}
+select,input[type=number]{font:inherit;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%}
+select:disabled,input:disabled{opacity:.55}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.check{display:flex;gap:8px;align-items:center;font-size:15px}
+.check input{accent-color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:600 15px "Source Sans 3",system-ui,sans-serif;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.stop{background:var(--warn);border-color:var(--warn);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.stage{display:flex;flex-direction:column;gap:16px;min-width:0}
+.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ro{background:var(--surface);padding:9px 12px;box-shadow:inset -1px -1px 0 var(--line)}
+.ro .k{font-size:14px;font-weight:600;color:var(--muted)}
+.ro .v{font:500 18px "JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.ro .v small{font-size:13px;color:var(--muted)}
+.charts2{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px}
+@media (max-width:760px){.charts2{grid-template-columns:minmax(0,1fr)}}
+figure{margin:0}
+figcaption{font-size:15px;color:var(--muted);margin-bottom:8px}
+figcaption b{color:var(--ink)}
+canvas{display:block;width:100%;height:var(--h,320px);max-width:100%}
+.note{font-size:14px;color:var(--muted)}
+.chip{display:inline-block;font-size:14px;padding:4px 10px;border-radius:8px;background:var(--warn-soft);color:var(--warn)}
+.ok{display:inline-block;font-size:14px;padding:4px 10px;border-radius:8px;background:var(--good-soft);color:var(--good)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+th{font-size:14px;color:var(--muted);font-weight:600}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
+.watch{font:500 34px "JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.calc ol{margin:10px 0 0;padding-left:24px;display:flex;flex-direction:column;gap:10px}
+.calc li::marker{font-weight:700;color:var(--accent)}
+.eq{font-family:"Cambria Math","STIX Two Math","Times New Roman",Georgia,serif;font-size:19px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;display:inline-block;margin-top:4px}
+.eq .x{color:var(--warn);text-decoration:line-through}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px}
+.frac>span:last-child{padding:0 4px}
+.big-eq{font-family:"Cambria Math","STIX Two Math","Times New Roman",Georgia,serif;font-size:26px;margin:6px 0 2px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="nojs" role="alert" style="background:#FFF3CD;border:1px solid #E0B84C;color:#4A3800;padding:12px 16px;border-radius:6px;margin:12px 0 4px;font-size:16px;line-height:1.5"><b>This copy of the lab cannot run.</b> Blackboard removes the scripts from uploaded web pages, so the sliders and graphs below will not work here. Open the lab from the link on Blackboard Ultra instead.</div>
+<script>(function(){var n=document.getElementById("nojs");if(n)n.parentNode.removeChild(n);})();</script>
+<header>
+  <p class="eyebrow">GEOL2331 Environmental Geophysics · Week 3 · Soil and groundwater hydrology</p>
+  <h1>Soil Water Lab</h1>
+  <p class="lede">Two interactive labs: A, rain on a soil profile, and B, a Darcy column for measuring saturated hydraulic conductivity. Your tasks for both are in the handout (sections 4 and 5). Change one thing at a time, write down what you expect, then run it.</p>
+  <nav class="tabs" role="tablist" aria-label="Labs">
+    <button role="tab" id="tab-a" aria-selected="true" aria-controls="pane-a" data-tab="a">A · Rain on a soil profile</button>
+    <button role="tab" id="tab-b" aria-selected="false" aria-controls="pane-b" data-tab="b">B · Darcy column</button>
+  </nav>
+</header>
+
+<!-- ================= TAB A ================= -->
+<section id="pane-a" class="pane" role="tabpanel" aria-labelledby="tab-a">
+  <div class="intro">
+    <details class="panel bg" open><summary>Why this matters</summary>
+      <p>Soil moisture decides where rain goes: into the soil and on to groundwater, back to the air through plants, or straight off the surface to rivers. That split controls flash floods, drought stress on crops, landslide risk and groundwater recharge. Rain held in soil ("green water") supplies about 78 % of the water used to grow the world's crops (Mekonnen &amp; Hoekstra 2011).</p>
+      <p>The graph on the right shows what a real monitoring site logs: a rain gauge, soil moisture probes at three depths and a water-level logger.</p>
+    </details>
+    <div class="panel">
+      <h2>How to use this lab</h2>
+      <ol class="steps">
+        <li><b>Build a soil profile:</b> choose the topsoil and subsoil, the depth of the water table and how wet the soil is before the rain.</li>
+        <li><b>Choose the weather:</b> a rain event (or your own intensity, duration and number of bursts) and the evapotranspiration between showers.</li>
+        <li><b>Predict</b> what the probes will show, then press <b>Run</b>. You can pause, and change the rain settings, at any time.</li>
+        <li><b>Read the totals</b> in the top row: rain, infiltration, runoff, evapotranspiration and recharge, all in mm.</li>
+        <li><b>Change one thing</b> and run again. Changing the soil, the water table or the starting wetness restarts the run.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="lab">
+    <aside class="panel controls">
+      <h2>Soil profile</h2>
+      <div class="field"><label for="a-top">Topsoil, 0–30 cm</label><select id="a-top"></select></div>
+      <div class="field"><label for="a-sub">Subsoil, 30–200 cm</label><select id="a-sub"></select></div>
+      <div class="field"><label for="a-zw">Water table depth <output id="a-zw-o"></output></label><input type="range" id="a-zw" min="0.3" max="1.9" step="0.05" value="1.2"></div>
+      <div class="field"><label for="a-ante">Before the rain</label>
+        <select id="a-ante"><option value="dry">Dry (after a warm spell)</option><option value="normal" selected>Normal (drained to equilibrium)</option><option value="wet">Wet (after a wet week)</option></select></div>
+      <h2>Weather</h2>
+      <div class="field"><label for="a-preset">Rain event</label>
+        <select id="a-preset">
+          <option value="front" selected>Autumn frontal rain: 5 mm/h for 10 h</option>
+          <option value="storm">Summer thunderstorm: 40 mm/h for 1 h</option>
+          <option value="drizzle">Steady drizzle: 1 mm/h for 24 h</option>
+          <option value="week">Wet spell: 8 mm/h for 4 h, three days running</option>
+          <option value="custom">Custom</option>
+        </select></div>
+      <div class="field"><label for="a-rain">Intensity <output id="a-rain-o"></output></label><input type="range" id="a-rain" min="0.5" max="60" step="0.5" value="5"></div>
+      <div class="field"><label for="a-dur">Duration of each burst <output id="a-dur-o"></output></label><input type="range" id="a-dur" min="0.5" max="24" step="0.5" value="10"></div>
+      <div class="field"><label for="a-reps">Number of bursts, 24 h apart <output id="a-reps-o"></output></label><input type="range" id="a-reps" min="1" max="4" step="1" value="1"></div>
+      <div class="field"><label for="a-et">Evapotranspiration (dry hours) <output id="a-et-o"></output></label><input type="range" id="a-et" min="0" max="5" step="0.5" value="2"></div>
+      <div class="row">
+        <button class="btn" id="a-run">Run</button>
+        <button class="btn ghost" id="a-reset">Reset</button>
+      </div>
+      <div class="field"><label for="a-speed">Speed</label>
+        <select id="a-speed"><option value="0.05">Slow</option><option value="0.15" selected>Normal</option><option value="0.4">Fast</option></select></div>
+      <p class="note">The number after each soil is its saturated hydraulic conductivity, K<sub>sat</sub>: the fastest it can take in water once wet. Compare it with the rain intensity.</p>
+    </aside>
+    <div class="stage">
+      <div class="readouts" id="a-read"></div>
+      <div class="charts2">
+        <figure class="panel"><figcaption><b>Water in the profile.</b> Volumetric water content θ<sub>v</sub> against depth. Blue line: now. Dashed line: at the start. Dotted brown lines: porosity φ, where the soil is saturated. Squares: the probe depths.</figcaption><canvas id="a-prof" style="--h:430px"></canvas></figure>
+        <figure class="panel"><figcaption><b>What the field instruments log.</b> Top: rain gauge and surface runoff. Middle: soil moisture probes at 10, 30 and 60 cm. Bottom: depth to the water table, from a pressure logger in a piezometer.</figcaption><canvas id="a-ts" style="--h:430px"></canvas></figure>
+      </div>
+      <details class="panel bg"><summary>About the model</summary>
+        <p>Net recharge is the flow across the water table; a negative value means capillary rise from the water table into the soil. The model solves the 1D Richards equation with Brooks–Corey soil properties (Rawls et al. 1982 texture-class averages), a water table that drains towards a stream over about two days, and a simple root-zone evapotranspiration sink. It leaves out cracks and root channels (preferential flow). It is a teaching model and simplifies a lot, but the behaviour is right.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TAB B ================= -->
+<section id="pane-b" class="pane" role="tabpanel" aria-labelledby="tab-b" hidden>
+  <div class="intro">
+    <details class="panel bg" open><summary>Why this matters</summary>
+      <p>The saturated hydraulic conductivity, <span class="m">K</span><sub>sat</sub>, sets how fast groundwater, and anything dissolved in it, moves. It spans more than ten orders of magnitude between gravel and unweathered clay, far more than almost any other property in the Earth sciences. So <span class="m">K</span><sub>sat</sub> decides whether a spill reaches a borehole in a week or in a thousand years, how quickly an aquifer responds to pumping, and whether rain soaks in or runs off.</p>
+      <p>This lab is a constant-head permeameter, the standard laboratory test: keep a fixed head difference across a sample, collect the water that flows through it, and time it. Darcy's law then gives <span class="m">K</span><sub>sat</sub>.</p>
+    </details>
+    <div class="panel">
+      <h2>How to measure <span class="m">K</span><sub>sat</sub></h2>
+      <ol class="steps">
+        <li><b>Set up:</b> choose a sample, its length <span class="m">L</span> and the head difference Δ<span class="m">h</span>. The sketch is drawn to scale, so watch Δ<span class="m">h</span> and <span class="m">L</span> change.</li>
+        <li><b>Press Start.</b> The tap opens, water flows down through the sample into the measuring cylinder, and the stopwatch starts.</li>
+        <li><b>Wait</b> until you have a useful volume: 100–300 mL for sands. For slow samples, speed up the clock.</li>
+        <li><b>Press Stop and record.</b> The tap closes, and the volume <span class="m">V</span> and time <span class="m">t</span> go into the lab notebook.</li>
+        <li><b>Calculate</b> <span class="m">K</span><sub>sat</sub> with the steps at the bottom of the page. Repeat at other heads and look at the graph of <span class="m">Q</span> against <span class="m">i</span>.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="labB">
+    <div class="col">
+      <aside class="panel controls">
+        <h2>Set up the sample</h2>
+        <div class="field"><label for="b-mat">Sample</label><select id="b-mat"></select></div>
+        <label class="check"><input type="checkbox" id="b-layer"> Two layers, one above the other</label>
+        <div class="field" id="b-layer-f" hidden><label for="b-mat2">Lower layer</label><select id="b-mat2"></select>
+          <label for="b-frac" style="margin-top:6px">Upper layer's share of the column <output id="b-frac-o"></output></label><input type="range" id="b-frac" min="0.1" max="0.9" step="0.1" value="0.5"></div>
+        <div class="field"><label for="b-L">Sample length <span><span class="m">L</span> <output id="b-L-o"></output></span></label><input type="range" id="b-L" min="10" max="50" step="1" value="30"></div>
+        <div class="field"><label for="b-dh">Head difference <span>Δ<span class="m">h</span> <output id="b-dh-o"></output></span></label><input type="range" id="b-dh" min="1" max="100" step="1" value="20"></div>
+        <p class="note">The column is 10 cm across, so its cross-sectional area <span class="m">A</span> = 78.5 cm².</p>
+        <p class="note" id="b-lock" hidden>Stop the run to change the sample, <span class="m">L</span> or Δ<span class="m">h</span>.</p>
+        <div class="field"><label for="b-speed">Clock speed</label>
+          <select id="b-speed"><option value="1">Real time</option><option value="60">×60: 1 s is 1 minute</option><option value="3600">×3600: 1 s is 1 hour</option><option value="86400">×86 400: 1 s is 1 day</option></select></div>
+      </aside>
+      <figure class="panel"><figcaption><b>Typical K<sub>sat</sub> of materials</b> (ranges after Freeze &amp; Cherry 1979, log scale). The blue line marks your sample; it is hidden for the mystery samples.</figcaption><canvas id="b-ref" style="--h:240px"></canvas></figure>
+    </div>
+    <figure class="panel"><figcaption><b>The permeameter.</b> The overflow keeps the water level above the sample constant. Water flows down through the sample and out of the tube into the measuring cylinder. Heights are to scale: Δ<span class="m">h</span> is the drop from the water level above the sample to the outlet.</figcaption><canvas id="b-rig" style="--h:540px"></canvas></figure>
+    <div class="panel col side">
+      <div>
+        <div class="lbl">Stopwatch</div>
+        <div class="watch" id="b-watch">00:00</div>
+      </div>
+      <div class="row">
+        <button class="btn" id="b-start">Start</button>
+        <button class="btn stop" id="b-stop" disabled>Stop and record</button>
+      </div>
+      <div class="readouts" id="b-read"></div>
+      <div id="b-warn"></div>
+      <label class="check"><input type="checkbox" id="b-ans"> Show the answers (to check your working)</label>
+      <figure><figcaption><b>Hydraulic head along the sample.</b> Head falls from Δ<span class="m">h</span> at the top to 0 at the outlet level. The steeper the line, the bigger the gradient <span class="m">i</span> = Δ<span class="m">h</span>/<span class="m">L</span> pushing the water.</figcaption><canvas id="b-head" style="--h:220px"></canvas></figure>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="row" style="justify-content:space-between;align-items:center"><h3>Lab notebook</h3><button class="btn ghost" id="b-clear">Clear</button></div>
+      <p class="note">Each row is one run. <span class="m">Q</span> = <span class="m">V</span>/<span class="m">t</span>.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Sample</th><th>L (cm)</th><th>Δh (cm)</th><th>i</th><th>V (mL)</th><th>t (s)</th><th>Q (mL/s)</th><th class="kcol">K<sub>sat</sub> (m/s)</th></tr></thead><tbody id="b-tbody"></tbody></table></div>
+      <label class="check" style="margin-top:8px"><input type="checkbox" id="b-showK"> Show K<sub>sat</sub> in the table (check your own answer first)</label>
+    </div>
+    <figure class="panel"><figcaption><b>Your runs: flow rate <span class="m">Q</span> against gradient <span class="m">i</span></b> for the current sample. Darcy's law says the points lie on a straight line through the origin, with slope <span class="m">K</span><sub>sat</sub> × <span class="m">A</span>.</figcaption><canvas id="b-qi" style="--h:260px"></canvas><p class="note" id="b-fit"></p></figure>
+  </div>
+  <div class="panel calc">
+    <h2>Calculating <span class="m">K</span><sub>sat</sub>, step by step</h2>
+    <p>Darcy's law for the column, rearranged for the saturated hydraulic conductivity:</p>
+    <div class="big-eq"><span class="m">K</span><sub>sat</sub> = <span class="frac"><span><span class="m">Q L</span></span><span><span class="m">A</span> Δ<span class="m">h</span></span></span> = <span class="frac"><span><span class="m">Q</span></span><span><span class="m">A i</span></span></span></div>
+    <p class="note">Worked example: coarse sand, <span class="m">L</span> = 20 cm, Δ<span class="m">h</span> = 10 cm, 250 mL collected in 64 s. Write the units at every step and cancel them.</p>
+    <ol id="b-steps"></ol>
+    <div class="row" style="margin-top:12px"><button class="btn ghost" id="b-mine">Use my last run</button><button class="btn ghost" id="b-example">Back to the example</button></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// ---------- shared helpers ----------
+const $=id=>document.getElementById(id);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const MONO='12px "JetBrains Mono", ui-monospace, monospace';
+const SANS='13px "Source Sans 3", system-ui, sans-serif';
+function fit(cv){const r=cv.getBoundingClientRect();const d=window.devicePixelRatio||1;const w=Math.max(10,r.width),h=Math.max(10,r.height);
+  if(cv.width!==Math.round(w*d)||cv.height!==Math.round(h*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d);}
+  const c=cv.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);return {c,w,h};}
+const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function sci(v,dig=2){if(!isFinite(v))return '—';if(v===0)return '0';const e=Math.floor(Math.log10(Math.abs(v)));if(e>=-2&&e<4)return v.toPrecision(dig+1).replace(/\.?0+$/,m=>m.includes('.')?'':m);
+  const m=v/Math.pow(10,e);return m.toFixed(dig-1)+' × 10'+String(e).split('').map(ch=>SUP[ch]).join('');}
+function p10(e){return '10'+String(e).split('').map(ch=>SUP[ch]).join('');}
+// text with a subscript, e.g. sub(c,'θ','v',x,y): base in italic serif, subscript smaller and lower
+function subText(c,base,s,x,y,size,align){c.save();const f1=`italic ${size}px "Cambria Math","Times New Roman",serif`,f2=`${Math.round(size*.72)}px "Source Sans 3",sans-serif`;
+  c.font=f1;const w1=c.measureText(base).width;c.font=f2;const w2=c.measureText(s).width;let x0=x;if(align==='center')x0=x-(w1+w2)/2;else if(align==='right')x0=x-w1-w2;
+  c.textAlign='left';c.font=f1;c.fillText(base,x0,y);c.font=f2;c.fillText(s,x0+w1,y+size*.25);c.restore();return w1+w2;}
+function axes(c,b,o){
+  const tx=o.xlog?Math.log10:v=>v,ty=o.ylog?Math.log10:v=>v;
+  const x0=tx(o.x[0]),x1=tx(o.x[1]),y0=ty(o.y[0]),y1=ty(o.y[1]);
+  const X=v=>b.x+(tx(v)-x0)/(x1-x0)*b.w;
+  const Y=v=>o.yflip?b.y+(ty(v)-y0)/(y1-y0)*b.h:b.y+b.h-(ty(v)-y0)/(y1-y0)*b.h;
+  c.save();c.lineWidth=1;c.font=MONO;c.fillStyle=css('--muted');
+  (o.xt||[]).forEach(t=>{const px=X(t);c.strokeStyle=css('--grid');c.beginPath();c.moveTo(px,b.y);c.lineTo(px,b.y+b.h);c.stroke();
+    if(!o.noxl){c.textAlign='center';c.textBaseline='top';c.fillText(o.xf?o.xf(t):t,px,b.y+b.h+4);}});
+  (o.yt||[]).forEach(t=>{const py=Y(t);c.strokeStyle=css('--grid');c.beginPath();c.moveTo(b.x,py);c.lineTo(b.x+b.w,py);c.stroke();
+    c.textAlign='right';c.textBaseline='middle';c.fillText(o.yf?o.yf(t):t,b.x-5,py);});
+  c.strokeStyle=css('--line');c.strokeRect(b.x+.5,b.y+.5,b.w,b.h);
+  c.fillStyle=css('--muted');c.font='600 13px "Source Sans 3", system-ui, sans-serif';
+  if(o.xl){c.textAlign='center';c.textBaseline='bottom';c.fillText(o.xl,b.x+b.w/2,b.y+b.h+(o.noxl?16:34));}
+  if(o.yl){c.save();c.translate(b.x-(o.ylo||40),b.y+b.h/2);c.rotate(-Math.PI/2);c.textAlign='center';c.textBaseline='top';c.fillText(o.yl,0,0);c.restore();}
+  c.restore();return {X,Y};
+}
+function line(c,pts,col,w=2,dash){c.save();c.strokeStyle=col;c.lineWidth=w;if(dash)c.setLineDash(dash);c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.stroke();c.restore();}
+function ro(el,items){el.innerHTML=items.map(([k,v,u])=>`<div class="ro"><div class="k">${k}</div><div class="v">${v}${u?` <small>${u}</small>`:''}</div></div>`).join('');}
+function arrowHead(c,x,y,dir,col,s=6){c.save();c.fillStyle=col;c.beginPath();c.moveTo(x,y);c.lineTo(x-s,y-dir*s*1.4);c.lineTo(x+s,y-dir*s*1.4);c.closePath();c.fill();c.restore();}
+
+// tabs
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('.pane').forEach(p=>p.hidden=p.id!=='pane-'+b.dataset.tab);
+  try{localStorage.setItem('swl-tab',b.dataset.tab)}catch(e){}
+  drawAll();
+}));
+
+// ================= TAB A: soil profile =================
+// Brooks–Corey parameters, Rawls, Brakensiek & Saxton (1982) texture-class means. pb (m), Ks (m/h)
+const SOILS={
+  sand:{name:'Sand',ts:.437,tr:.020,pb:.0726,lam:.592,Ks:.210},
+  lsand:{name:'Loamy sand',ts:.437,tr:.035,pb:.0869,lam:.474,Ks:.0611},
+  sloam:{name:'Sandy loam',ts:.453,tr:.041,pb:.1466,lam:.322,Ks:.0259},
+  loam:{name:'Loam',ts:.463,tr:.027,pb:.1115,lam:.220,Ks:.0132},
+  siloam:{name:'Silt loam',ts:.501,tr:.015,pb:.2076,lam:.211,Ks:.0068},
+  cloam:{name:'Clay loam',ts:.464,tr:.075,pb:.2589,lam:.194,Ks:.0023},
+  clay:{name:'Clay',ts:.475,tr:.090,pb:.3730,lam:.131,Ks:.0006},
+  compact:{name:'Compacted loam',ts:.40,tr:.027,pb:.1115,lam:.220,Ks:.0013}
+};
+['a-top','a-sub'].forEach(id=>{$(id).innerHTML=Object.entries(SOILS).map(([k,s])=>`<option value="${k}">${s.name} (Ksat ${(s.Ks*1000).toFixed(s.Ks<.005?1:0)} mm/h)</option>`).join('');$(id).value='loam';});
+const NZ=80,DZ=0.025,ZMAX=NZ*DZ,SE1=0.92,TEND=120,T0=6;
+const A={running:false};
+const PRESETS={front:[5,10,1],storm:[40,1,1],drizzle:[1,24,1],week:[8,4,3]};
+function soilAt(i){return A.soil[i];}
+function cacheSoil(){A.soil=Array.from({length:NZ},(_,i)=>(i+.5)*DZ<0.30?SOILS[$('a-top').value]:SOILS[$('a-sub').value]);}
+function cacheRain(){A.rp=[+$('a-rain').value,+$('a-dur').value,+$('a-reps').value,+$('a-et').value];}
+function hOf(s,th){const se=Math.min(1,Math.max(1e-3,(th-s.tr)/(s.ts-s.tr)));
+  if(se>=SE1){const h1=-s.pb*Math.pow(SE1,-1/s.lam);return h1*(1-se)/(1-SE1);}
+  return -s.pb*Math.pow(se,-1/s.lam);}
+function thOf(s,h){if(h>=0)return s.ts;const h1=-s.pb*Math.pow(SE1,-1/s.lam);
+  const se=h>=h1?1-(h/h1)*(1-SE1):Math.pow(-h/s.pb,-s.lam);return s.tr+se*(s.ts-s.tr);}
+function kOf(s,th){const se=Math.min(1,Math.max(0,(th-s.tr)/(s.ts-s.tr)));return s.Ks*Math.pow(se,3+2/s.lam);}
+function Sy(s){return Math.max(0.02,s.ts-thOf(s,-1.0));}
+function Dmax(s){const h1=-s.pb*Math.pow(SE1,-1/s.lam);return s.Ks*(-h1)/((1-SE1)*(s.ts-s.tr));}
+function rainAt(t){const [r,d,n]=A.rp;
+  for(let k=0;k<n;k++){const s=T0+k*24;if(t>=s&&t<s+d)return r/1000;}return 0;}
+function iwOf(zw){return Math.max(0,Math.min(NZ,Math.ceil(zw/DZ-.5)));}
+function resetA(){
+  A.running=false;$('a-run').textContent='Run';cacheSoil();cacheRain();
+  const zw=+$('a-zw').value,ante=$('a-ante').value,f=ante==='wet'?.35:1;
+  const th=new Float64Array(NZ);
+  // dry: extra suction that fades to zero at the water table, so the start is dry at the top but not pulling hard on the water table
+  for(let i=0;i<NZ;i++){const z=(i+.5)*DZ,s=soilAt(i);const extra=ante==='dry'?4*Math.pow(1-z/zw,2):0;th[i]=z>=zw?s.ts:thOf(s,-(zw-z)*f-extra);}
+  const dm=Math.max(Dmax(SOILS[$('a-top').value]),Dmax(SOILS[$('a-sub').value]));
+  A.s={t:0,th,th0:Float64Array.from(th),zw,zw0:zw,iw:iwOf(zw),dt:Math.min(0.01,0.2*DZ*DZ/dm),rain:0,inf:0,run:0,et:0,rech:0,runRate:0,log:[]};
+  logA();drawAll();
+}
+function stepA(dt){
+  const S=A.s,th=S.th,iw=S.iw,h=new Float64Array(NZ),k=new Float64Array(NZ),q=new Float64Array(NZ+1);
+  for(let i=0;i<iw;i++){const s=soilAt(i);h[i]=hOf(s,th[i]);k[i]=kOf(s,th[i]);}
+  const r=rainAt(S.t);let q0=0,runoff=0;
+  if(iw===0)runoff=r;else{const s=soilAt(0);const cap=.5*(s.Ks+k[0])*((0-h[0])/(DZ/2)+1);q0=Math.min(r,Math.max(0,cap));runoff=r-q0;}
+  q[0]=q0;
+  for(let i=1;i<iw;i++)q[i]=.5*(k[i-1]+k[i])*((h[i-1]-h[i])/DZ+1);
+  let qr=0;
+  if(iw>0){const i=iw-1,s=soilAt(i);const dist=Math.max(S.zw-(i+.5)*DZ,DZ/2);qr=.5*(k[i]+s.Ks)*(h[i]/dist+1);q[iw]=qr;}
+  for(let i=0;i<iw;i++)th[i]+=(q[i]-q[i+1])*dt/DZ;
+  // root-zone ET during dry hours
+  const et=A.rp[3]/1000/24;let etd=0;
+  if(r===0&&et>0){const nr=Math.min(12,iw);for(let i=0;i<nr;i++){const s=soilAt(i);const st=Math.min(1,Math.max(0,(h[i]+150)/140));
+    const take=Math.min(et/nr*st*dt,Math.max(0,(th[i]-s.tr-.005)*DZ));th[i]-=take/DZ;etd+=take;}}
+  // overflow goes back up (perching), surface overflow becomes runoff
+  let back=0;
+  for(let i=iw-1;i>=0;i--){const s=soilAt(i);if(th[i]>s.ts){const ex=(th[i]-s.ts)*DZ;th[i]=s.ts;if(i>0)th[i-1]+=ex/DZ;else{runoff+=ex/dt;back+=ex;}}
+    if(th[i]<s.tr+1e-4)th[i]=s.tr+1e-4;}
+  // water table
+  const sw=soilAt(Math.min(NZ-1,iw));
+  S.zw-=qr*dt/Sy(sw);
+  S.zw+=(S.zw0-S.zw)*dt/48;
+  S.zw=Math.max(0,Math.min(ZMAX-.05,S.zw));
+  const niw=iwOf(S.zw);
+  if(niw<iw)for(let i=niw;i<iw;i++)th[i]=soilAt(i).ts;
+  if(niw>iw)for(let i=iw;i<niw;i++){const s=soilAt(i);th[i]=s.ts-Sy(s);}
+  S.iw=niw;
+  S.rain+=r*dt;S.inf+=q0*dt-back;S.run+=runoff*dt;S.et+=etd;S.rech+=qr*dt;S.runRate=runoff;S.t+=dt;
+}
+function sensor(z){return A.s.th[Math.min(NZ-1,Math.floor(z/DZ))];}
+function logA(){const S=A.s;S.log.push({t:S.t,r:rainAt(S.t)*1000,ro:S.runRate*1000,a:sensor(.1),b:sensor(.3),c:sensor(.6),zw:S.zw,prof:Float32Array.from(S.th)});S.nextLog=S.t+0.25;}
+function advanceA(hours){const S=A.s;let left=hours;cacheRain();
+  while(left>1e-9&&S.t<TEND){const dt=Math.min(S.dt,left);stepA(dt);left-=dt;if(S.t>=S.nextLog)logA();}
+  if(S.t>=TEND){A.running=false;$('a-run').textContent='Run again';}}
+function drawProfile(){
+  const {c,w,h}=fit($('a-prof'));const S=A.s;
+  const b={x:48,y:24,w:w-48-16,h:h-24-46};
+  const ax=axes(c,b,{x:[0,.55],y:[0,ZMAX],yflip:true,xt:[0,.1,.2,.3,.4,.5],yt:[0,.5,1,1.5,2],yf:t=>t.toFixed(1),yl:'Depth (m)',ylo:44});
+  c.fillStyle=css('--muted');subText(c,'θ','v',b.x+b.w/2-30,b.y+b.h+38,15,'left');c.font='600 13px "Source Sans 3",sans-serif';c.textAlign='left';c.fillText('(m³/m³)',b.x+b.w/2-8,b.y+b.h+38);
+  const top=SOILS[$('a-top').value],sub=SOILS[$('a-sub').value];
+  // water fill
+  c.save();c.beginPath();c.moveTo(ax.X(0),ax.Y(0));
+  for(let i=0;i<NZ;i++){const z0=i*DZ,z1=(i+1)*DZ;c.lineTo(ax.X(S.th[i]),ax.Y(z0));c.lineTo(ax.X(S.th[i]),ax.Y(z1));}
+  c.lineTo(ax.X(0),ax.Y(ZMAX));c.closePath();c.fillStyle=css('--water-soft');c.fill();c.restore();
+  // porosity lines
+  line(c,[[ax.X(top.ts),ax.Y(0)],[ax.X(top.ts),ax.Y(.3)]],css('--soil'),1.5,[2,3]);
+  line(c,[[ax.X(sub.ts),ax.Y(.3)],[ax.X(sub.ts),ax.Y(ZMAX)]],css('--soil'),1.5,[2,3]);
+  // initial & current
+  const p0=[],p1=[];for(let i=0;i<NZ;i++){const z=(i+.5)*DZ;p0.push([ax.X(S.th0[i]),ax.Y(z)]);p1.push([ax.X(S.th[i]),ax.Y(z)]);}
+  line(c,p0,css('--muted'),1.5,[5,4]);line(c,p1,css('--water'),2.5);
+  if($('a-top').value!==$('a-sub').value){line(c,[[b.x,ax.Y(.3)],[b.x+b.w,ax.Y(.3)]],css('--soil'),1,[6,4]);}
+  c.font=SANS;c.fillStyle=css('--soil');c.textAlign='right';c.textBaseline='top';
+  c.fillText(top.name,b.x+b.w-4,ax.Y(0)+4);c.fillText(sub.name,b.x+b.w-4,ax.Y(.3)+4);
+  c.font='italic 15px "Cambria Math","Times New Roman",serif';c.fillText('φ',ax.X(top.ts)-3,ax.Y(.12));
+  // water table
+  const yw=ax.Y(S.zw);line(c,[[b.x,yw],[b.x+b.w,yw]],css('--water'),1.5);
+  c.fillStyle=css('--water');c.beginPath();c.moveTo(b.x+14,yw-9);c.lineTo(b.x+24,yw-9);c.lineTo(b.x+19,yw-1);c.closePath();c.fill();
+  c.font=SANS;c.textAlign='left';c.textBaseline='bottom';c.fillText('water table',b.x+28,yw-2);
+  // sensors
+  [[.1,'--c1'],[.3,'--c2'],[.6,'--c3']].forEach(([z,col])=>{c.fillStyle=css(col);c.fillRect(b.x-4,ax.Y(z)-3,8,6);});
+  // rain & runoff
+  const r=rainAt(S.t);if(r>0&&S.t<TEND&&A.running){c.strokeStyle=css('--water');c.lineWidth=1.2;const n=Math.min(40,4+r*1000);for(let j=0;j<n;j++){const x=b.x+((j*53.7+S.t*400)%b.w);const y=4+((j*17)%12);c.beginPath();c.moveTo(x,y);c.lineTo(x-2,y+6);c.stroke();}}
+  if(S.runRate>1e-6){c.fillStyle=css('--warn');c.font='600 14px "Source Sans 3", sans-serif';c.textAlign='left';c.textBaseline='top';c.fillText('runoff →',b.x+6,b.y+4);}
+}
+function drawTS(){
+  const {c,w,h}=fit($('a-ts'));const L=A.s.log;
+  const bx=52,bw=w-bx-26,gap=26;const hh=(h-20-30-2*gap);
+  const b1={x:bx,y:12,w:bw,h:hh*.26},b2={x:bx,y:12+hh*.26+gap,w:bw,h:hh*.44},b3={x:bx,y:12+hh*.70+2*gap,w:bw,h:hh*.30};
+  const xt=[0,24,48,72,96,120];
+  const rmax=Math.max(10,...L.map(p=>Math.max(p.r,p.ro)))*1.1;
+  const a1=axes(c,b1,{x:[0,TEND],y:[0,rmax],xt,noxl:true,yt:[0,Math.round(rmax/2)],yl:'mm/h',ylo:46});
+  c.fillStyle=css('--water');L.forEach(p=>{if(p.r>0){const x=a1.X(p.t);c.fillRect(x,a1.Y(p.r),Math.max(1,a1.X(.25)-a1.X(0)),a1.Y(0)-a1.Y(p.r));}});
+  line(c,L.map(p=>[a1.X(p.t),a1.Y(p.ro)]),css('--warn'),2);
+  c.font=SANS;c.textAlign='right';c.textBaseline='top';c.fillStyle=css('--water');c.fillText('rain',b1.x+b1.w-6,b1.y+4);c.fillStyle=css('--warn');c.fillText('runoff',b1.x+b1.w-6,b1.y+19);
+  const a2=axes(c,b2,{x:[0,TEND],y:[0,.55],xt,noxl:true,yt:[0,.1,.2,.3,.4,.5]});
+  c.save();c.translate(b2.x-54,b2.y+b2.h/2);c.rotate(-Math.PI/2);c.fillStyle=css('--muted');c.textBaseline='top';subText(c,'θ','v',0,12,15,'center');c.restore();
+  [['a','--c1','10 cm'],['b','--c2','30 cm'],['c','--c3','60 cm']].forEach(([k,col,lab],j)=>{line(c,L.map(p=>[a2.X(p.t),a2.Y(p[k])]),css(col),2);
+    c.fillStyle=css(col);c.font=SANS;c.textAlign='right';c.textBaseline='top';c.fillText(lab,b2.x+b2.w-6-j*60,b2.y+4);});
+  const a3=axes(c,b3,{x:[0,TEND],y:[0,ZMAX],yflip:true,xt,xf:t=>t+' h',yt:[0,1,2],yl:'water table (m)',ylo:46,xl:''});
+  line(c,L.map(p=>[a3.X(p.t),a3.Y(p.zw)]),css('--water'),2);
+  const xn=a1.X(A.s.t);[b1,b2,b3].forEach(b=>line(c,[[xn,b.y],[xn,b.y+b.h]],css('--muted'),1,[2,3]));
+}
+function readA(){const S=A.s;const mm=v=>(v*1000).toFixed(1);
+  ro($('a-read'),[['Time',`${S.t.toFixed(1)}`,'h'],['Rain',mm(S.rain),'mm'],['Infiltrated',mm(S.inf),'mm'],['Runoff',mm(S.run),'mm'],['Evapotranspiration',mm(S.et),'mm'],['Net recharge',mm(S.rech),'mm'],['Water table',S.zw.toFixed(2),'m deep']]);}
+function syncA(){cacheRain();$('a-zw-o').textContent=(+$('a-zw').value).toFixed(2)+' m';$('a-rain-o').textContent=$('a-rain').value+' mm/h';$('a-dur-o').textContent=$('a-dur').value+' h';$('a-reps-o').textContent=$('a-reps').value;$('a-et-o').textContent=$('a-et').value+' mm/day';}
+$('a-preset').addEventListener('change',e=>{const p=PRESETS[e.target.value];if(p){$('a-rain').value=p[0];$('a-dur').value=p[1];$('a-reps').value=p[2];}syncA();});
+['a-rain','a-dur','a-reps'].forEach(id=>$(id).addEventListener('input',()=>{$('a-preset').value='custom';syncA();}));
+$('a-et').addEventListener('input',syncA);
+['a-top','a-sub','a-zw','a-ante'].forEach(id=>$(id).addEventListener('input',()=>{syncA();resetA();}));
+$('a-run').addEventListener('click',()=>{if(A.s.t>=TEND)resetA();A.running=!A.running;$('a-run').textContent=A.running?'Pause':'Run';});
+$('a-reset').addEventListener('click',resetA);
+
+// ================= TAB B: Darcy column =================
+// K: saturated hydraulic conductivity (m/s); n: effective porosity; d: grain size (m, for the Reynolds number); g: grain radius in the sketch (px)
+const MATS={
+  gravel:{name:'Gravel',K:1e-2,n:.25,d:5e-3,g:6.5},
+  csand:{name:'Coarse sand',K:1e-3,n:.30,d:1e-3,g:3.6},
+  fsand:{name:'Fine sand',K:1e-4,n:.32,d:2e-4,g:2.3},
+  ssand:{name:'Silty sand',K:1e-5,n:.28,d:8e-5,g:1.7},
+  silt:{name:'Silt (loess)',K:1e-7,n:.20,d:3e-5,g:1.2},
+  peat:{name:'Peat (humified)',K:1e-7,n:.10,d:1e-4,g:1.5,peat:true},
+  till:{name:'Glacial till',K:5e-9,n:.05,d:1e-5,g:1.0,mix:true},
+  clay:{name:'Clay',K:1e-10,n:.03,d:2e-6,g:.8},
+  mysA:{name:'Mystery A',K:2.5e-4,n:.30,d:4e-4,g:2.6,hide:true},
+  mysB:{name:'Mystery B',K:3e-6,n:.25,d:5e-5,g:1.5,hide:true}
+};
+const REF=[['Gravel',-4,-1],['Clean sand',-6,-2],['Silty sand',-7,-3],['Silt, loess',-9,-5],['Peat',-8,-3],['Glacial till',-12,-6],['Clay',-12,-9]];
+$('b-mat').innerHTML=Object.entries(MATS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('');$('b-mat').value='fsand';
+$('b-mat2').innerHTML=Object.entries(MATS).filter(([k,m])=>!m.hide).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('');$('b-mat2').value='clay';
+const AREA=Math.PI*0.05*0.05;   // m², column 10 cm across
+const DROP=0.05;                // mL per drop
+const CYL=1000;                 // measuring cylinder, mL
+const B={flowing:false,vol:0,watch:0,records:[],parts:[],grains:null,drops:[],dropAcc:0,last:performance.now(),msg:'',calc:'example'};
+function cfg(){const L=+$('b-L').value,dh=+$('b-dh').value,m1=MATS[$('b-mat').value],lay=$('b-layer').checked,m2=MATS[$('b-mat2').value],f=+$('b-frac').value;
+  let Keff=m1.K,label=m1.name,l1=L,l2=0;
+  if(lay){l1=L*f;l2=L-l1;Keff=L/(l1/m1.K+l2/m2.K);label=`${m1.name} over ${m2.name}`;}
+  const i=dh/L,q=Keff*i,Q=q*AREA*1e6; // Q in mL/s
+  return {L,dh,m1,m2,lay,f,l1,l2,Keff,label,i,q,Q,mys:(m1.hide||(lay&&m2.hide))};}
+function makeGrains(){const C=cfg();const g=[];let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  for(let j=0;j<900;j++){const y=rnd(),x=rnd();const m=C.lay&&y>C.f?C.m2:C.m1;let r=m.g*(.7+.6*rnd());if(m.mix&&rnd()<.08)r=5+rnd()*4;
+    if(r*r*j/900>60&&r>3&&j>250)continue;g.push({x,y,r});}
+  B.grains=g;B.parts=Array.from({length:36},(_,j)=>({x:rnd(),y:rnd()}));}
+function geom(w,h){const C=cfg();
+  const yRes=60,s=(h-yRes-178)/100;                 // px per cm: the largest head difference (100 cm) fits above the cylinder
+  const colW=62,colX=Math.max(58,Math.min(96,w*.17)),colTop=yRes+10,colBot=colTop+C.L*s;
+  const yOut=yRes+C.dh*s,pipeX=colX+colW+52,spoutX=pipeX+40;
+  const cylW=58,cylX=spoutX-cylW/2,cylBot=h-16,cylTop=h-160;
+  const annX=Math.min(w-110,spoutX+62);
+  return {C,yRes,s,colW,colX,colTop,colBot,yOut,pipeX,spoutX,cylW,cylX,cylBot,cylTop,annX};}
+function drawRig(){
+  const {c,w,h}=fit($('b-rig'));const G=geom(w,h),C=G.C;
+  const {yRes,colW,colX,colTop,colBot,yOut,pipeX,spoutX,cylW,cylX,cylBot,cylTop,annX}=G;
+  const water=css('--water'),wsoft=css('--water-soft'),muted=css('--muted'),ink=css('--ink'),acc=css('--accent');
+  // reservoir above the sample, with an overflow that keeps the level constant
+  const rx0=colX-28,rx1=colX+colW+28;
+  c.fillStyle=wsoft;c.fillRect(rx0,yRes,rx1-rx0,colTop-yRes);
+  c.strokeStyle=muted;c.lineWidth=2;c.beginPath();c.moveTo(rx0,yRes-22);c.lineTo(rx0,colTop);c.lineTo(colX,colTop);c.moveTo(colX+colW,colTop);c.lineTo(rx1,colTop);c.lineTo(rx1,yRes-22);c.stroke();
+  line(c,[[rx0,yRes],[rx1,yRes]],water,2);
+  // overflow pipe (left) and supply tap (right)
+  c.strokeStyle=muted;c.lineWidth=4;c.beginPath();c.moveTo(rx0,yRes);c.lineTo(rx0-22,yRes);c.lineTo(rx0-22,yRes+26);c.stroke();
+  c.strokeStyle=muted;c.lineWidth=4;c.beginPath();c.moveTo(rx1+30,yRes-34);c.lineTo(rx1-14,yRes-34);c.lineTo(rx1-14,yRes-26);c.stroke();
+  if(B.flowing){line(c,[[rx1-14,yRes-24],[rx1-14,yRes]],water,3);line(c,[[rx0-22,yRes+28],[rx0-22,yRes+40]],water,2,[3,3]);}
+  c.font=SANS;c.fillStyle=muted;c.textAlign='left';c.textBaseline='bottom';c.fillText('overflow',Math.max(2,rx0-36),yRes-26);
+  c.textAlign='right';c.fillText('supply',rx1+30,yRes-38);
+  // column with grains
+  c.save();c.beginPath();c.rect(colX,colTop,colW,colBot-colTop);c.clip();
+  const splitY=colTop+(colBot-colTop)*(C.lay?C.f:1);
+  c.fillStyle=wsoft;c.fillRect(colX,colTop,colW,colBot-colTop);
+  if(!B.grains)makeGrains();
+  B.grains.forEach(gr=>{const y=colTop+gr.y*(colBot-colTop);const m=(C.lay&&y>splitY)?C.m2:C.m1;
+    c.fillStyle=m.peat?css('--soil'):css('--soil-soft');c.globalAlpha=m.peat?.55:1;c.beginPath();c.arc(colX+gr.x*colW,y,gr.r,0,7);c.fill();
+    c.strokeStyle=css('--soil');c.globalAlpha=.5;c.lineWidth=.6;c.stroke();c.globalAlpha=1;});
+  c.fillStyle=water;B.parts.forEach(p=>{c.beginPath();c.arc(colX+p.x*colW,colTop+p.y*(colBot-colTop),1.8,0,7);c.fill();});
+  if(C.lay)line(c,[[colX,splitY],[colX+colW,splitY]],css('--soil'),1.5,[4,3]);
+  c.restore();
+  c.strokeStyle=muted;c.lineWidth=2;c.strokeRect(colX,colTop,colW,colBot-colTop);
+  // outlet tube: down, across, up or down to the outlet level, then out
+  const yb=colBot+14;
+  c.lineCap='round';c.lineJoin='round';
+  c.strokeStyle=muted;c.lineWidth=7;c.beginPath();c.moveTo(colX+colW/2,colBot);c.lineTo(colX+colW/2,yb);c.lineTo(pipeX,yb);c.lineTo(pipeX,yOut);c.lineTo(spoutX,yOut);c.stroke();
+  c.strokeStyle=wsoft;c.lineWidth=3.5;c.stroke();
+  // tap on the outlet tube
+  const tapY=yb,tapX=(colX+colW/2+pipeX)/2;
+  c.fillStyle=B.flowing?css('--good'):css('--warn');c.beginPath();c.arc(tapX,tapY,7,0,7);c.fill();
+  c.strokeStyle='#fff';c.lineWidth=2.5;c.beginPath();if(B.flowing){c.moveTo(tapX-5,tapY);c.lineTo(tapX+5,tapY);}else{c.moveTo(tapX,tapY-5);c.lineTo(tapX,tapY+5);}c.stroke();
+  c.font='600 13px "Source Sans 3",sans-serif';c.fillStyle=B.flowing?css('--good'):css('--warn');c.textAlign='center';c.textBaseline='top';c.fillText(B.flowing?'tap open':'tap closed',tapX,tapY+10);
+  // measuring cylinder
+  const cylH=cylBot-cylTop,fillH=Math.min(1,B.vol/CYL)*cylH,ySurf=cylBot-fillH;
+  c.fillStyle=wsoft;c.fillRect(cylX,ySurf,cylW,fillH);
+  line(c,[[cylX,ySurf],[cylX+cylW,ySurf]],water,2);
+  c.strokeStyle=muted;c.lineWidth=2;c.beginPath();c.moveTo(cylX,cylTop);c.lineTo(cylX,cylBot);c.lineTo(cylX+cylW,cylBot);c.lineTo(cylX+cylW,cylTop);c.stroke();
+  c.lineWidth=1;c.font=MONO;c.fillStyle=muted;c.textAlign='left';c.textBaseline='middle';
+  for(let v=0;v<=CYL;v+=50){const y=cylBot-v/CYL*cylH;c.beginPath();c.moveTo(cylX+cylW-(v%100?6:12),y);c.lineTo(cylX+cylW,y);c.stroke();if(v%200===0&&v>0)c.fillText(v,cylX+cylW+4,y);}
+  c.textAlign='left';c.textBaseline='bottom';c.fillText('mL',cylX+cylW+4,cylTop-4);
+  // drops, or a stream when the flow is fast
+  const rate=B.flowing?C.Q*(+$('b-speed').value)/DROP:0;   // drops per real second
+  if(B.flowing&&rate>30){line(c,[[spoutX+2,yOut+3],[spoutX+2,ySurf]],water,Math.min(4,1.5+Math.log10(rate/30)*2));}
+  else{c.fillStyle=water;
+    if(B.flowing){const r=1.5+2.5*Math.cbrt(Math.min(1,B.dropAcc/DROP));c.beginPath();c.arc(spoutX+2,yOut+3+r,r,0,7);c.fill();}
+    B.drops.forEach(d=>{c.beginPath();c.arc(spoutX+2,d.y,3,0,7);c.fill();});}
+  // dimension: delta h, from the water level above the sample to the outlet
+  c.strokeStyle=acc;c.lineWidth=1;c.setLineDash([3,3]);c.beginPath();c.moveTo(rx1+2,yRes);c.lineTo(annX+8,yRes);c.moveTo(spoutX+8,yOut);c.lineTo(annX+8,yOut);c.stroke();c.setLineDash([]);
+  if(yOut-yRes>14){line(c,[[annX,yRes+1],[annX,yOut-1]],acc,1.8);arrowHead(c,annX,yRes+1,-1,acc,4);arrowHead(c,annX,yOut-1,1,acc,4);}
+  c.fillStyle=acc;c.font='600 15px "Source Sans 3",sans-serif';c.textAlign='left';c.textBaseline='middle';
+  c.fillText('Δh = '+C.dh+' cm',annX+8,Math.max(yRes+10,(yRes+yOut)/2));
+  // dimension: L
+  const lx=colX-12;line(c,[[lx,colTop],[lx,colBot]],ink,1.2);arrowHead(c,lx,colTop,-1,ink,3.5);arrowHead(c,lx,colBot,1,ink,3.5);
+  c.save();c.translate(lx-6,(colTop+colBot)/2);c.rotate(-Math.PI/2);c.fillStyle=ink;c.font='600 15px "Source Sans 3",sans-serif';c.textAlign='center';c.textBaseline='bottom';c.fillText('L = '+C.L+' cm',0,0);c.restore();
+  c.fillStyle=muted;c.font=SANS;c.textAlign='left';c.textBaseline='top';c.fillText('A = 78.5 cm²',colX-24,yb+40);
+}
+function drawHead(){const {c,w,h}=fit($('b-head'));const C=cfg();
+  const b={x:52,y:12,w:w-70,h:h-56};
+  const ax=axes(c,b,{x:[0,50],y:[0,100],xt:[0,10,20,30,40,50],yt:[0,25,50,75,100],xl:'distance down the sample (cm)',yl:'head (cm)',ylo:46});
+  c.fillStyle=css('--soil-soft');c.globalAlpha=.5;c.fillRect(ax.X(0),b.y,ax.X(C.L)-ax.X(0),b.h);c.globalAlpha=1;
+  let pts=[[0,C.dh]];if(C.lay){const r1=C.l1/C.m1.K,r2=C.l2/C.m2.K;pts.push([C.l1,C.dh*r2/(r1+r2)]);}pts.push([C.L,0]);
+  line(c,pts.map(p=>[ax.X(p[0]),ax.Y(p[1])]),css('--accent'),3);
+  pts.forEach(p=>{c.fillStyle=css('--accent');c.beginPath();c.arc(ax.X(p[0]),ax.Y(p[1]),3.5,0,7);c.fill();});
+  if(C.lay)line(c,[[ax.X(C.l1),b.y],[ax.X(C.l1),b.y+b.h]],css('--soil'),1,[4,3]);
+  c.fillStyle=css('--ink');c.font='600 14px "Source Sans 3",sans-serif';c.textAlign='right';c.textBaseline='top';
+  c.fillText(C.lay?'gradient changes at the layer boundary':`i = Δh / L = ${C.dh} / ${C.L} = ${C.i.toFixed(2)}`,b.x+b.w-6,b.y+6);
+  c.fillStyle=css('--soil');c.font=SANS;c.textAlign='center';c.textBaseline='bottom';c.fillText('sample',ax.X(C.L/2),b.y+b.h-4);}
+function currentRecs(){const lab=cfg().label;return B.records.filter(r=>r.label===lab);}
+function drawQI(){const {c,w,h}=fit($('b-qi'));const R=currentRecs();
+  if(!R.length){c.fillStyle=css('--muted');c.font='15px "Source Sans 3", sans-serif';c.textBaseline='top';c.fillText('Record a run to start the graph.',12,16);$('b-fit').textContent='No runs yet for this sample.';return;}
+  const imax=Math.max(1,...R.map(r=>r.i))*1.1,qmax=Math.max(1e-12,...R.map(r=>r.Q))*1.15;
+  const ax=axes(c,{x:66,y:12,w:w-84,h:h-56},{x:[0,imax],y:[0,qmax],xt:[0,imax/2,imax].map(v=>+v.toFixed(2)),yt:[0,qmax/2,qmax],yf:t=>sci(t,2),xl:'gradient i = Δh / L',yl:'Q (mL/s)',ylo:62});
+  const s=R.reduce((a,r)=>a+r.i*r.Q,0)/R.reduce((a,r)=>a+r.i*r.i,0);
+  line(c,[[ax.X(0),ax.Y(0)],[ax.X(imax),ax.Y(Math.min(qmax,s*imax))]],css('--muted'),1.5,[5,4]);
+  c.fillStyle=css('--c2');R.forEach(r=>{c.beginPath();c.arc(ax.X(r.i),ax.Y(r.Q),5,0,7);c.fill();});
+  $('b-fit').innerHTML=R.length>1?`Best-fit slope through the origin: ${sci(s,3)} mL/s per unit gradient. This is <i class="m">K</i><sub>sat</sub> × <i class="m">A</i>, so divide by <i class="m">A</i> (in m², with <i class="m">Q</i> in m³/s) to get <i class="m">K</i><sub>sat</sub>.`:'Record at least two runs at different heads to fit a line.';}
+function drawRef(){const {c,w,h}=fit($('b-ref'));const lw=Math.min(132,w*.42);
+  const ax=axes(c,{x:lw,y:6,w:w-lw-14,h:h-44},{x:[1e-13,1],xlog:true,y:[0,REF.length],xt:[1e-12,1e-9,1e-6,1e-3,1],xf:t=>p10(Math.round(Math.log10(t)))});
+  c.fillStyle=css('--muted');c.font='600 13px "Source Sans 3",sans-serif';c.textAlign='center';c.textBaseline='bottom';c.fillText('Ksat (m/s)',lw+(w-lw-14)/2,h-2);
+  REF.forEach((r,j)=>{const y=ax.Y(REF.length-j-.5);c.fillStyle=css('--soil-soft');c.strokeStyle=css('--soil');
+    const x0=ax.X(Math.pow(10,r[1])),x1=ax.X(Math.pow(10,r[2]));c.fillRect(x0,y-7,x1-x0,14);c.strokeRect(x0+.5,y-6.5,x1-x0-1,13);
+    c.fillStyle=css('--ink');c.font='14px "Source Sans 3", sans-serif';c.textAlign='right';c.textBaseline='middle';c.fillText(r[0],lw-8,y);});
+  const C=cfg();if(!C.mys){const x=ax.X(C.Keff);line(c,[[x,6],[x,h-38]],css('--water'),2.5);}
+}
+function fmtT(s){s=Math.floor(s);const d=Math.floor(s/86400),hh=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60;const p=v=>String(v).padStart(2,'0');
+  if(d>0)return `${d} d ${p(hh)}:${p(m)}:${p(ss)}`;if(hh>0)return `${hh}:${p(m)}:${p(ss)}`;return `${p(m)}:${p(ss)}`;}
+function readB(){const C=cfg();
+  const items=[['Volume collected, V',B.vol<10?B.vol.toFixed(3):B.vol.toFixed(1),'mL'],['Time, t',Math.floor(B.watch).toLocaleString('en-GB'),'s'],['Gradient, i = Δh/L',C.i.toFixed(2),'']];
+  if($('b-ans').checked){if(C.mys)items.push(['Answers','hidden for mystery samples','']);
+    else{items.push(['True Q',sci(C.Q,3),'mL/s']);items.push(['True K<sub>sat</sub>',sci(C.Keff,2),'m/s']);items.push(['Darcy flux q',sci(C.q*86400,2),'m/day']);
+      items.push(['Seepage velocity v',sci(C.q/(C.lay?Math.min(C.m1.n,C.m2.n):C.m1.n)*86400,2),'m/day']);}}
+  ro($('b-read'),items);
+  const d=C.lay?Math.max(C.m1.d,C.m2.d):C.m1.d,Re=C.q*d/1e-6;
+  $('b-warn').innerHTML=(B.msg?`<p><span class="chip">${B.msg}</span></p>`:'')+(Re>5?`<p><span class="chip">Reynolds number about ${Re.toFixed(0)}: the flow is turbulent, not laminar, so Darcy's law overestimates <i class="m">Q</i> here. Use a smaller head.</span></p>`:'');
+  $('b-watch').textContent=fmtT(B.watch);}
+function renderTable(){const showK=$('b-showK').checked;document.querySelectorAll('.kcol').forEach(e=>e.hidden=!showK);
+  $('b-tbody').innerHTML=B.records.map((r,j)=>`<tr><td>${j+1}</td><td>${r.label}</td><td>${r.L}</td><td>${r.dh}</td><td>${r.i.toFixed(3)}</td><td>${r.V<10?r.V.toFixed(3):r.V.toFixed(1)}</td><td>${r.t.toLocaleString('en-GB')}</td><td>${sci(r.Q,3)}</td><td ${showK?'':'hidden'}>${r.mys?'—':sci(r.Q*1e-6*r.L/(AREA*r.dh),2)}</td></tr>`).join('')||'<tr><td colspan="9" class="note" style="text-align:left;font-family:inherit">Press Start, let water collect, then Stop and record.</td></tr>';}
+function syncB(){$('b-L-o').textContent=$('b-L').value+' cm';$('b-dh-o').textContent=$('b-dh').value+' cm';$('b-frac-o').textContent=Math.round(+$('b-frac').value*100)+' %';$('b-layer-f').hidden=!$('b-layer').checked;}
+function lock(on){['b-mat','b-mat2','b-layer','b-frac','b-L','b-dh'].forEach(id=>$(id).disabled=on);$('b-lock').hidden=!on;}
+['b-mat','b-mat2','b-layer','b-frac'].forEach(id=>$(id).addEventListener('input',()=>{syncB();B.grains=null;B.vol=0;B.watch=0;B.msg='';drawAll();}));
+['b-L','b-dh'].forEach(id=>$(id).addEventListener('input',()=>{syncB();if(id==='b-L')B.grains=null;B.msg='';drawAll();}));
+['b-showK','b-ans'].forEach(id=>$(id).addEventListener('input',()=>{renderTable();drawAll();}));
+function stopRun(record){B.flowing=false;$('b-stop').disabled=true;$('b-start').disabled=false;lock(false);
+  if(record){const t=Math.floor(B.watch);
+    if(t<1||B.vol<=0){B.msg='Nothing collected yet: run for longer.';}
+    else{const C=cfg();const V=B.vol*(1+(Math.random()-.5)*.02);   // reading the cylinder: ±1 %
+      B.records.push({label:C.label,L:C.L,dh:C.dh,i:C.i,V,t,Q:V/t,mys:C.mys});renderTable();B.msg='';}}}
+$('b-start').addEventListener('click',()=>{B.vol=0;B.watch=0;B.dropAcc=0;B.drops=[];B.msg='';B.flowing=true;$('b-stop').disabled=false;$('b-start').disabled=true;lock(true);});
+$('b-stop').addEventListener('click',()=>{stopRun(true);drawAll();});
+$('b-clear').addEventListener('click',()=>{B.records=[];renderTable();drawAll();});
+function tickB(dtReal){const C=cfg();const sp=+$('b-speed').value;const dt=dtReal*sp;
+  const h=$('b-rig').getBoundingClientRect().height;
+  if(B.flowing){
+    B.vol+=C.Q*dt;B.watch+=dt;
+    if(B.vol>CYL){B.vol=CYL;stopRun(false);B.msg='The cylinder overflowed: run not recorded. Stop sooner or lower Δh.';}
+    // drops: one is released every DROP mL
+    B.dropAcc+=C.Q*dt;let n=0;while(B.dropAcc>=DROP&&n<40){B.dropAcc-=DROP;n++;if(B.drops.length<12)B.drops.push({y:geom(1,h).yOut+8,v:0});}
+    // water moving through the pores at the seepage velocity (capped so it stays visible)
+    const G=geom(1,h);const pxPerCm=G.s;
+    B.parts.forEach(p=>{const m=C.lay&&p.y>C.f?C.m2:C.m1;const v=C.q/m.n*100*pxPerCm;   // px per model second
+      const dy=Math.min(.03,v*dt/Math.max(1,G.colBot-G.colTop));p.y+=dy;p.x+=(Math.random()-.5)*Math.min(.02,dy*3);
+      if(p.y>1){p.y-=1;p.x=Math.random();}p.x=Math.min(.97,Math.max(.03,p.x));});}
+  // falling drops (real time)
+  const G=geom(1,h);const surf=G.cylBot-Math.min(1,B.vol/CYL)*(G.cylBot-G.cylTop);
+  B.drops.forEach(d=>{d.v+=2400*dtReal;d.y+=d.v*dtReal;});B.drops=B.drops.filter(d=>d.y<surf-2);}
+
+// ---- step-by-step calculation panel ----
+function stepsHTML(r){
+  const Qm=r.Q*1e-6,K=Qm/(AREA*r.i);
+  const f=(v,d=3)=>sci(v,d);
+  return `
+  <li><b>Flow rate.</b> Divide the volume by the time, then convert mL to m³ (1 mL = 10⁻⁶ m³):<br>
+    <span class="eq"><span class="m">Q</span> = <span class="frac"><span><span class="m">V</span></span><span><span class="m">t</span></span></span> = <span class="frac"><span>${f(r.V,3)} mL</span><span>${r.t.toLocaleString('en-GB')} s</span></span> = ${f(r.Q,3)} mL/s = ${f(Qm,3)} m³/s</span></li>
+  <li><b>Area of the column</b> (radius 5 cm = 0.05 m):<br>
+    <span class="eq"><span class="m">A</span> = π<span class="m">r</span>² = π × (0.05 m)² = 7.85 × 10⁻³ m²</span></li>
+  <li><b>Hydraulic gradient.</b> The centimetres cancel, so <span class="m">i</span> has no units:<br>
+    <span class="eq"><span class="m">i</span> = <span class="frac"><span>Δ<span class="m">h</span></span><span><span class="m">L</span></span></span> = <span class="frac"><span>${r.dh} <span class="x">cm</span></span><span>${r.L} <span class="x">cm</span></span></span> = ${r.i.toFixed(3)}</span></li>
+  <li><b>Saturated hydraulic conductivity.</b> m³/s divided by m² leaves m/s, a speed:<br>
+    <span class="eq"><span class="m">K</span><sub>sat</sub> = <span class="frac"><span><span class="m">Q</span></span><span><span class="m">A i</span></span></span> = <span class="frac"><span>${f(Qm,3)} m³/s</span><span>${f(AREA,3)} m² × ${r.i.toFixed(3)}</span></span> = <b>${r.mys?'?':f(K,2)}</b> m/s</span></li>
+  <li><b>In metres per day,</b> multiply by the 86 400 seconds in a day:<br>
+    <span class="eq">${r.mys?'?':f(K,2)} m/<span class="x">s</span> × 86 400 <span class="x">s</span>/day = <b>${r.mys?'?':f(K*86400,2)}</b> m/day</span></li>
+  <li><b>Check</b> your value against the chart of typical K<sub>sat</sub> next to the controls. Is it in the right range for the material?</li>`;}
+const EXAMPLE={label:'Coarse sand',L:20,dh:10,i:0.5,V:250,t:64,Q:250/64,mys:false};
+function renderSteps(){let r=EXAMPLE;
+  if(B.calc==='mine'){const R=B.records;if(R.length)r=R[R.length-1];}
+  $('b-steps').innerHTML=stepsHTML(r);
+  $('b-steps').previousElementSibling.innerHTML=(r===EXAMPLE)?'Worked example: coarse sand, <span class="m">L</span> = 20 cm, Δ<span class="m">h</span> = 10 cm, 250 mL collected in 64 s. Write the units at every step and cancel them.'
+    :`Your last run: ${r.label}, <span class="m">L</span> = ${r.L} cm, Δ<span class="m">h</span> = ${r.dh} cm, ${r.V<10?r.V.toFixed(3):r.V.toFixed(1)} mL in ${r.t.toLocaleString('en-GB')} s.${r.mys?' The answer is hidden for mystery samples: work it out yourself.':''}`;}
+$('b-mine').addEventListener('click',()=>{B.calc='mine';if(!B.records.length){B.msg='Record a run first.';}renderSteps();drawAll();});
+$('b-example').addEventListener('click',()=>{B.calc='example';renderSteps();});
+
+// ================= loop =================
+function drawAll(){
+  if(!$('pane-a').hidden){drawProfile();drawTS();readA();}
+  if(!$('pane-b').hidden){drawRig();drawHead();drawQI();drawRef();readB();}
+}
+function loop(now){const dt=Math.min(.1,(now-B.last)/1000);B.last=now;
+  if(A.running)advanceA(+$('a-speed').value);
+  if(!$('pane-b').hidden)tickB(dt);
+  drawAll();requestAnimationFrame(loop);}
+window.addEventListener('resize',drawAll);
+syncA();syncB();resetA();renderTable();makeGrains();renderSteps();
+(function(){let t=location.hash.replace('#','');try{t=t||localStorage.getItem('swl-tab')}catch(e){} if(t==='b')$('tab-'+t).click();})();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
