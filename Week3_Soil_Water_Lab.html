@@ -50,6 +50,8 @@ h3{font-size:17px;font-weight:700}
 @media (max-width:900px){.intro{grid-template-columns:minmax(0,1fr)}}
 .bg summary{cursor:pointer;font-weight:700;font-size:20px}
 .bg p{max-width:80ch;margin:8px 0 0}
+.panel h3{margin-top:12px}
+.panel ul{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
 .steps{margin:8px 0 0;padding-left:24px;display:flex;flex-direction:column;gap:6px}
 .steps li::marker{font-weight:700;color:var(--accent)}
 .lab{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
@@ -108,12 +110,12 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
 </head>
 <body>
 <div class="wrap">
-<div id="nojs" role="alert" style="background:#FFF3CD;border:1px solid #E0B84C;color:#4A3800;padding:12px 16px;border-radius:6px;margin:12px 0 4px;font-size:16px;line-height:1.5"><b>This copy of the lab cannot run.</b> Blackboard removes the scripts from uploaded web pages, so the sliders and graphs below will not work here. Open the lab from the link on Blackboard Ultra instead.</div>
+<div id="nojs" role="alert" style="background:#FFF3CD;border:1px solid #E0B84C;color:#4A3800;padding:12px 16px;border-radius:6px;margin:12px 0 4px;font-size:16px;line-height:1.5"><b>This copy of the lab cannot run.</b> Blackboard removes the scripts from uploaded web pages, so the sliders and graphs below will not work here. Open the working version here: <a href="https://jbaronas.github.io/env_geophys/Week3_Soil_Water_Lab.html" style="color:#4A3800;font-weight:700">https://jbaronas.github.io/env_geophys/Week3_Soil_Water_Lab.html</a></div>
 <script>(function(){var n=document.getElementById("nojs");if(n)n.parentNode.removeChild(n);})();</script>
 <header>
   <p class="eyebrow">GEOL2331 Environmental Geophysics · Week 3 · Soil and groundwater hydrology</p>
   <h1>Soil Water Lab</h1>
-  <p class="lede">Two interactive labs: A, rain on a soil profile, and B, a Darcy column for measuring saturated hydraulic conductivity. Your tasks for both are in the handout (sections 4 and 5). Change one thing at a time, write down what you expect, then run it.</p>
+  <p class="lede">Two interactive labs: A, rain on a soil profile, and B, a Darcy column for measuring saturated hydraulic conductivity. Your tasks are in the handout: the Lab A worksheet comes after lecture Part 2, and the Lab B worksheet after Part 3. Change one thing at a time, write down what you expect, then run it.</p>
   <nav class="tabs" role="tablist" aria-label="Labs">
     <button role="tab" id="tab-a" aria-selected="true" aria-controls="pane-a" data-tab="a">A · Rain on a soil profile</button>
     <button role="tab" id="tab-b" aria-selected="false" aria-controls="pane-b" data-tab="b">B · Darcy column</button>
@@ -122,20 +124,30 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
 
 <!-- ================= TAB A ================= -->
 <section id="pane-a" class="pane" role="tabpanel" aria-labelledby="tab-a">
-  <div class="intro">
-    <details class="panel bg" open><summary>Why this matters</summary>
-      <p>Soil moisture decides where rain goes: into the soil and on to groundwater, back to the air through plants, or straight off the surface to rivers. That split controls flash floods, drought stress on crops, landslide risk and groundwater recharge. Rain held in soil ("green water") supplies about 78 % of the water used to grow the world's crops (Mekonnen &amp; Hoekstra 2011).</p>
-      <p>The graph on the right shows what a real monitoring site logs: a rain gauge, soil moisture probes at three depths and a water-level logger.</p>
-    </details>
-    <div class="panel">
-      <h2>How to use this lab</h2>
-      <ol class="steps">
-        <li><b>Build a soil profile:</b> choose the topsoil and subsoil, the depth of the water table and how wet the soil is before the rain.</li>
-        <li><b>Choose the weather:</b> a rain event (or your own intensity, duration and number of bursts) and the evapotranspiration between showers.</li>
-        <li><b>Predict</b> what the probes will show, then press <b>Run</b>. You can pause, and change the rain settings, at any time.</li>
-        <li><b>Read the totals</b> in the top row: rain, infiltration, runoff, evapotranspiration and recharge, all in mm.</li>
-        <li><b>Change one thing</b> and run again. Changing the soil, the water table or the starting wetness restarts the run.</li>
-      </ol>
+  <div class="panel">
+    <h2>How to use Lab A</h2>
+    <div class="grid2">
+      <div>
+        <h3>What the lab shows</h3>
+        <p>A soil profile 2 m deep: a topsoil (0–30 cm) over a subsoil, with a water table below. The first rain falls at hour 6; further bursts come 24 hours apart. Three virtual soil moisture probes, at 10, 30 and 60 cm depth, record the volumetric water content θ<sub>v</sub>. A rain gauge records the rain, and a pressure logger in a piezometer records the depth of the water table. One run covers 5 days (120 hours).</p>
+        <h3>The controls (left)</h3>
+        <ul>
+          <li><b>Soil profile:</b> the topsoil and subsoil (the number after each soil is its K<sub>sat</sub> in mm/h), the starting depth of the water table, and how wet the soil is before the rain.</li>
+          <li><b>Weather:</b> pick a rain event, or set the intensity, the duration of each burst and the number of bursts (24 h apart) yourself. Evapotranspiration takes water out of the root zone between showers.</li>
+          <li><b>Run / Pause</b> starts and stops the clock. You can change the rain settings during a run; changing the soil, the water table or the starting wetness starts the run again.</li>
+          <li><b>Restart</b> clears the graphs and runs the same settings again from hour 0.</li>
+          <li><b>Reset all settings</b> puts every control back to its starting value: loam topsoil and subsoil, water table at 1.6 m, dry start, a wet spell of rain (8 mm/h for 4 h, three days running), evapotranspiration 3 mm/day.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>The panels (right)</h3>
+        <ul>
+          <li><b>Top row:</b> running totals since hour 0, in mm. Rain that falls faster than the soil can take it in runs off as <b>Hortonian runoff</b> (infiltration-excess). Rain that falls on ground that is already full runs off as <b>saturation-excess runoff</b>. <b>Net recharge</b> is the water that reached the water table; it is negative if the dry soil pulls water up from the water table.</li>
+          <li><b>Water in the profile:</b> θ<sub>v</sub> against depth, now (blue) and at the start (dashed). The dotted brown line is the porosity φ: where the blue line touches it, the soil is saturated.</li>
+          <li><b>What the field instruments log:</b> rain and runoff (top), the three probes (middle) and the water table depth (bottom), against time.</li>
+        </ul>
+        <p class="note">Your tasks and the questions are in the handout, in the Lab A worksheet after lecture Part 2.</p>
+      </div>
     </div>
   </div>
   <div class="lab">
@@ -143,25 +155,26 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
       <h2>Soil profile</h2>
       <div class="field"><label for="a-top">Topsoil, 0–30 cm</label><select id="a-top"></select></div>
       <div class="field"><label for="a-sub">Subsoil, 30–200 cm</label><select id="a-sub"></select></div>
-      <div class="field"><label for="a-zw">Water table depth <output id="a-zw-o"></output></label><input type="range" id="a-zw" min="0.3" max="1.9" step="0.05" value="1.2"></div>
+      <div class="field"><label for="a-zw">Water table depth <output id="a-zw-o"></output></label><input type="range" id="a-zw" min="0.3" max="1.9" step="0.05" value="1.6"></div>
       <div class="field"><label for="a-ante">Before the rain</label>
-        <select id="a-ante"><option value="dry">Dry (after a warm spell)</option><option value="normal" selected>Normal (drained to equilibrium)</option><option value="wet">Wet (after a wet week)</option></select></div>
+        <select id="a-ante"><option value="dry" selected>Dry (after a warm spell)</option><option value="normal">Normal (drained to equilibrium)</option><option value="wet">Wet (after a wet week)</option></select></div>
       <h2>Weather</h2>
       <div class="field"><label for="a-preset">Rain event</label>
         <select id="a-preset">
-          <option value="front" selected>Autumn frontal rain: 5 mm/h for 10 h</option>
+          <option value="front">Autumn frontal rain: 5 mm/h for 10 h</option>
           <option value="storm">Summer thunderstorm: 40 mm/h for 1 h</option>
           <option value="drizzle">Steady drizzle: 1 mm/h for 24 h</option>
-          <option value="week">Wet spell: 8 mm/h for 4 h, three days running</option>
+          <option value="week" selected>Wet spell: 8 mm/h for 4 h, three days running</option>
           <option value="custom">Custom</option>
         </select></div>
-      <div class="field"><label for="a-rain">Intensity <output id="a-rain-o"></output></label><input type="range" id="a-rain" min="0.5" max="60" step="0.5" value="5"></div>
-      <div class="field"><label for="a-dur">Duration of each burst <output id="a-dur-o"></output></label><input type="range" id="a-dur" min="0.5" max="24" step="0.5" value="10"></div>
-      <div class="field"><label for="a-reps">Number of bursts, 24 h apart <output id="a-reps-o"></output></label><input type="range" id="a-reps" min="1" max="4" step="1" value="1"></div>
-      <div class="field"><label for="a-et">Evapotranspiration (dry hours) <output id="a-et-o"></output></label><input type="range" id="a-et" min="0" max="5" step="0.5" value="2"></div>
+      <div class="field"><label for="a-rain">Intensity <output id="a-rain-o"></output></label><input type="range" id="a-rain" min="0.5" max="60" step="0.5" value="8"></div>
+      <div class="field"><label for="a-dur">Duration of each burst <output id="a-dur-o"></output></label><input type="range" id="a-dur" min="0.5" max="24" step="0.5" value="4"></div>
+      <div class="field"><label for="a-reps">Number of bursts, 24 h apart <output id="a-reps-o"></output></label><input type="range" id="a-reps" min="1" max="4" step="1" value="3"></div>
+      <div class="field"><label for="a-et">Evapotranspiration (dry hours) <output id="a-et-o"></output></label><input type="range" id="a-et" min="0" max="5" step="0.5" value="3"></div>
       <div class="row">
         <button class="btn" id="a-run">Run</button>
-        <button class="btn ghost" id="a-reset">Reset</button>
+        <button class="btn ghost" id="a-reset">Restart</button>
+        <button class="btn ghost" id="a-defaults">Reset all settings</button>
       </div>
       <div class="field"><label for="a-speed">Speed</label>
         <select id="a-speed"><option value="0.05">Slow</option><option value="0.15" selected>Normal</option><option value="0.4">Fast</option></select></div>
@@ -171,7 +184,7 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
       <div class="readouts" id="a-read"></div>
       <div class="charts2">
         <figure class="panel"><figcaption><b>Water in the profile.</b> Volumetric water content θ<sub>v</sub> against depth. Blue line: now. Dashed line: at the start. Dotted brown lines: porosity φ, where the soil is saturated. Squares: the probe depths.</figcaption><canvas id="a-prof" style="--h:430px"></canvas></figure>
-        <figure class="panel"><figcaption><b>What the field instruments log.</b> Top: rain gauge and surface runoff. Middle: soil moisture probes at 10, 30 and 60 cm. Bottom: depth to the water table, from a pressure logger in a piezometer.</figcaption><canvas id="a-ts" style="--h:430px"></canvas></figure>
+        <figure class="panel"><figcaption><b>What the field instruments log.</b> Top: rain gauge, Hortonian runoff and saturation-excess runoff. Middle: soil moisture probes at 10, 30 and 60 cm. Bottom: depth to the water table, from a pressure logger in a piezometer.</figcaption><canvas id="a-ts" style="--h:430px"></canvas></figure>
       </div>
       <details class="panel bg"><summary>About the model</summary>
         <p>Net recharge is the flow across the water table; a negative value means capillary rise from the water table into the soil. The model solves the 1D Richards equation with Brooks–Corey soil properties (Rawls et al. 1982 texture-class averages), a water table that drains towards a stream over about two days, and a simple root-zone evapotranspiration sink. It leaves out cracks and root channels (preferential flow). It is a teaching model and simplifies a lot, but the behaviour is right.</p>
@@ -182,20 +195,30 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
 
 <!-- ================= TAB B ================= -->
 <section id="pane-b" class="pane" role="tabpanel" aria-labelledby="tab-b" hidden>
-  <div class="intro">
-    <details class="panel bg" open><summary>Why this matters</summary>
-      <p>The saturated hydraulic conductivity, <span class="m">K</span><sub>sat</sub>, sets how fast groundwater, and anything dissolved in it, moves. It spans more than ten orders of magnitude between gravel and unweathered clay, far more than almost any other property in the Earth sciences. So <span class="m">K</span><sub>sat</sub> decides whether a spill reaches a borehole in a week or in a thousand years, how quickly an aquifer responds to pumping, and whether rain soaks in or runs off.</p>
-      <p>This lab is a constant-head permeameter, the standard laboratory test: keep a fixed head difference across a sample, collect the water that flows through it, and time it. Darcy's law then gives <span class="m">K</span><sub>sat</sub>.</p>
-    </details>
-    <div class="panel">
-      <h2>How to measure <span class="m">K</span><sub>sat</sub></h2>
-      <ol class="steps">
-        <li><b>Set up:</b> choose a sample, its length <span class="m">L</span> and the head difference Δ<span class="m">h</span>. The sketch is drawn to scale, so watch Δ<span class="m">h</span> and <span class="m">L</span> change.</li>
-        <li><b>Press Start.</b> The tap opens, water flows down through the sample into the measuring cylinder, and the stopwatch starts.</li>
-        <li><b>Wait</b> until you have a useful volume: 100–300 mL for sands. For slow samples, speed up the clock.</li>
-        <li><b>Press Stop and record.</b> The tap closes, and the volume <span class="m">V</span> and time <span class="m">t</span> go into the lab notebook.</li>
-        <li><b>Calculate</b> <span class="m">K</span><sub>sat</sub> with the steps at the bottom of the page. Repeat at other heads and look at the graph of <span class="m">Q</span> against <span class="m">i</span>.</li>
-      </ol>
+  <div class="panel">
+    <h2>How to use Lab B</h2>
+    <div class="grid2">
+      <div>
+        <h3>What the lab shows</h3>
+        <p>A constant-head permeameter, the standard laboratory test for the saturated hydraulic conductivity, <span class="m">K</span><sub>sat</sub>. A column 10 cm across (cross-sectional area <span class="m">A</span> = 78.5 cm²) holds a sample of length <span class="m">L</span>. An overflow keeps the water level above the sample constant. The outlet tube ends Δ<span class="m">h</span> lower, so Δ<span class="m">h</span> is the head difference that pushes water through the sample. The sketch is drawn to scale vertically, so you can see <span class="m">L</span> and Δ<span class="m">h</span> change.</p>
+        <h3>The controls (left)</h3>
+        <ul>
+          <li><b>Sample:</b> a material, or Mystery A or B. Tick <b>Two layers</b> to put a second material under the first.</li>
+          <li><b>Sample length <span class="m">L</span></b> and <b>head difference Δ<span class="m">h</span></b>. These are locked while water is flowing.</li>
+          <li><b>Clock speed:</b> speed up time for slow samples. The stopwatch counts model time.</li>
+          <li><b>Reset all settings</b> puts every control back to its starting value: fine sand, one layer, <span class="m">L</span> = 30 cm, Δ<span class="m">h</span> = 20 cm, real time. Your lab notebook is kept; use its Clear button to empty it.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Making a measurement</h3>
+        <ol class="steps">
+          <li><b>Start</b> opens the tap, empties the measuring cylinder and starts the stopwatch. Water flows down through the sample and drips into the cylinder.</li>
+          <li>Wait until you have a useful volume: 100–300 mL for sands. If the cylinder overflows (1000 mL), the run is lost.</li>
+          <li><b>Stop and record</b> closes the tap and writes the volume <span class="m">V</span> and time <span class="m">t</span> (whole seconds) into the lab notebook.</li>
+          <li>Work out <span class="m">K</span><sub>sat</sub> with the steps at the bottom of the page. The graph of <span class="m">Q</span> against <span class="m">i</span> collects all your runs for the current sample.</li>
+        </ol>
+        <p class="note">Two boxes reveal answers: "Show the answers" and "Show K<sub>sat</sub> in the table". Leave them off until you have worked it out yourself. Your tasks are in the handout, in the Lab B worksheet after lecture Part 3.</p>
+      </div>
     </div>
   </div>
   <div class="labB">
@@ -212,6 +235,7 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
         <p class="note" id="b-lock" hidden>Stop the run to change the sample, <span class="m">L</span> or Δ<span class="m">h</span>.</p>
         <div class="field"><label for="b-speed">Clock speed</label>
           <select id="b-speed"><option value="1">Real time</option><option value="60">×60: 1 s is 1 minute</option><option value="3600">×3600: 1 s is 1 hour</option><option value="86400">×86 400: 1 s is 1 day</option></select></div>
+        <button class="btn ghost" id="b-defaults">Reset all settings</button>
       </aside>
       <figure class="panel"><figcaption><b>Typical K<sub>sat</sub> of materials</b> (ranges after Freeze &amp; Cherry 1979, log scale). The blue line marks your sample; it is hidden for the mystery samples.</figcaption><canvas id="b-ref" style="--h:240px"></canvas></figure>
     </div>
@@ -334,14 +358,14 @@ function resetA(){
   // dry: extra suction that fades to zero at the water table, so the start is dry at the top but not pulling hard on the water table
   for(let i=0;i<NZ;i++){const z=(i+.5)*DZ,s=soilAt(i);const extra=ante==='dry'?4*Math.pow(1-z/zw,2):0;th[i]=z>=zw?s.ts:thOf(s,-(zw-z)*f-extra);}
   const dm=Math.max(Dmax(SOILS[$('a-top').value]),Dmax(SOILS[$('a-sub').value]));
-  A.s={t:0,th,th0:Float64Array.from(th),zw,zw0:zw,iw:iwOf(zw),dt:Math.min(0.01,0.2*DZ*DZ/dm),rain:0,inf:0,run:0,et:0,rech:0,runRate:0,log:[]};
+  A.s={t:0,th,th0:Float64Array.from(th),zw,zw0:zw,zws:zw,iw:iwOf(zw),dt:Math.min(0.01,0.2*DZ*DZ/dm),rain:0,inf:0,run:0,hort:0,satx:0,et:0,rech:0,runRate:0,hRate:0,sRate:0,log:[]};
   logA();drawAll();
 }
 function stepA(dt){
   const S=A.s,th=S.th,iw=S.iw,h=new Float64Array(NZ),k=new Float64Array(NZ),q=new Float64Array(NZ+1);
   for(let i=0;i<iw;i++){const s=soilAt(i);h[i]=hOf(s,th[i]);k[i]=kOf(s,th[i]);}
-  const r=rainAt(S.t);let q0=0,runoff=0;
-  if(iw===0)runoff=r;else{const s=soilAt(0);const cap=.5*(s.Ks+k[0])*((0-h[0])/(DZ/2)+1);q0=Math.min(r,Math.max(0,cap));runoff=r-q0;}
+  const r=rainAt(S.t);let q0=0,hort=0,satx=0;
+  if(iw===0)satx=r;else{const s=soilAt(0);const cap=.5*(s.Ks+k[0])*((0-h[0])/(DZ/2)+1);q0=Math.min(r,Math.max(0,cap));hort=r-q0;}
   q[0]=q0;
   for(let i=1;i<iw;i++)q[i]=.5*(k[i-1]+k[i])*((h[i-1]-h[i])/DZ+1);
   let qr=0;
@@ -353,7 +377,7 @@ function stepA(dt){
     const take=Math.min(et/nr*st*dt,Math.max(0,(th[i]-s.tr-.005)*DZ));th[i]-=take/DZ;etd+=take;}}
   // overflow goes back up (perching), surface overflow becomes runoff
   let back=0;
-  for(let i=iw-1;i>=0;i--){const s=soilAt(i);if(th[i]>s.ts){const ex=(th[i]-s.ts)*DZ;th[i]=s.ts;if(i>0)th[i-1]+=ex/DZ;else{runoff+=ex/dt;back+=ex;}}
+  for(let i=iw-1;i>=0;i--){const s=soilAt(i);if(th[i]>s.ts){const ex=(th[i]-s.ts)*DZ;th[i]=s.ts;if(i>0)th[i-1]+=ex/DZ;else{satx+=ex/dt;back+=ex;}}
     if(th[i]<s.tr+1e-4)th[i]=s.tr+1e-4;}
   // water table
   const sw=soilAt(Math.min(NZ-1,iw));
@@ -364,10 +388,21 @@ function stepA(dt){
   if(niw<iw)for(let i=niw;i<iw;i++)th[i]=soilAt(i).ts;
   if(niw>iw)for(let i=iw;i<niw;i++){const s=soilAt(i);th[i]=s.ts-Sy(s);}
   S.iw=niw;
-  S.rain+=r*dt;S.inf+=q0*dt-back;S.run+=runoff*dt;S.et+=etd;S.rech+=qr*dt;S.runRate=runoff;S.t+=dt;
+  S.rain+=r*dt;S.inf+=q0*dt-back;S.hort+=hort*dt;S.satx+=satx*dt;S.run+=(hort+satx)*dt;S.et+=etd;S.rech+=qr*dt;S.runRate=hort+satx;S.hRate=hort;S.sRate=satx;S.t+=dt;
+  updWT(dt);
 }
+// water table shown to students. It rises to the top of the soil just above the groundwater that has filled up to zero pressure (water pushed up from below);
+// the capillary fringe (saturated but under suction) is not counted, and the position is interpolated within a cell from the pressure head of the cell above.
+// It falls no faster than saturated soil can drain under gravity: Ksat / specific yield.
+function wtTarget(){const S=A.s;let kk=S.iw;while(kk>0&&hOf(soilAt(kk-1),S.th[kk-1])>=-0.001)kk--;
+  if(kk===S.iw)return S.zw;if(kk===0)return 0;const c=kk-1,est=(c+.5)*DZ-hOf(soilAt(c),S.th[c]);
+  return Math.min(S.zw,kk*DZ,Math.max(c*DZ,est));}
+function updWT(dt){const S=A.s,T=wtTarget();
+  if(T<=S.zws){S.zws=T;return;}
+  const s=soilAt(Math.min(NZ-1,Math.floor(S.zws/DZ)));S.zws=Math.min(T,S.zws+s.Ks/Sy(s)*dt);}
+function wtShown(){return A.s.zws;}
 function sensor(z){return A.s.th[Math.min(NZ-1,Math.floor(z/DZ))];}
-function logA(){const S=A.s;S.log.push({t:S.t,r:rainAt(S.t)*1000,ro:S.runRate*1000,a:sensor(.1),b:sensor(.3),c:sensor(.6),zw:S.zw,prof:Float32Array.from(S.th)});S.nextLog=S.t+0.25;}
+function logA(){const S=A.s;S.log.push({t:S.t,r:rainAt(S.t)*1000,ro:S.runRate*1000,rh:S.hRate*1000,rs:S.sRate*1000,a:sensor(.1),b:sensor(.3),c:sensor(.6),zw:wtShown(),prof:Float32Array.from(S.th)});S.nextLog=S.t+0.25;}
 function advanceA(hours){const S=A.s;let left=hours;cacheRain();
   while(left>1e-9&&S.t<TEND){const dt=Math.min(S.dt,left);stepA(dt);left-=dt;if(S.t>=S.nextLog)logA();}
   if(S.t>=TEND){A.running=false;$('a-run').textContent='Run again';}}
@@ -392,14 +427,14 @@ function drawProfile(){
   c.fillText(top.name,b.x+b.w-4,ax.Y(0)+4);c.fillText(sub.name,b.x+b.w-4,ax.Y(.3)+4);
   c.font='italic 15px "Cambria Math","Times New Roman",serif';c.fillText('φ',ax.X(top.ts)-3,ax.Y(.12));
   // water table
-  const yw=ax.Y(S.zw);line(c,[[b.x,yw],[b.x+b.w,yw]],css('--water'),1.5);
+  const yw=ax.Y(wtShown());line(c,[[b.x,yw],[b.x+b.w,yw]],css('--water'),1.5);
   c.fillStyle=css('--water');c.beginPath();c.moveTo(b.x+14,yw-9);c.lineTo(b.x+24,yw-9);c.lineTo(b.x+19,yw-1);c.closePath();c.fill();
   c.font=SANS;c.textAlign='left';c.textBaseline='bottom';c.fillText('water table',b.x+28,yw-2);
   // sensors
   [[.1,'--c1'],[.3,'--c2'],[.6,'--c3']].forEach(([z,col])=>{c.fillStyle=css(col);c.fillRect(b.x-4,ax.Y(z)-3,8,6);});
   // rain & runoff
   const r=rainAt(S.t);if(r>0&&S.t<TEND&&A.running){c.strokeStyle=css('--water');c.lineWidth=1.2;const n=Math.min(40,4+r*1000);for(let j=0;j<n;j++){const x=b.x+((j*53.7+S.t*400)%b.w);const y=4+((j*17)%12);c.beginPath();c.moveTo(x,y);c.lineTo(x-2,y+6);c.stroke();}}
-  if(S.runRate>1e-6){c.fillStyle=css('--warn');c.font='600 14px "Source Sans 3", sans-serif';c.textAlign='left';c.textBaseline='top';c.fillText('runoff →',b.x+6,b.y+4);}
+  if(S.runRate>1e-6){const hz=S.hRate>=S.sRate;c.fillStyle=css(hz?'--warn':'--c3');c.font='600 14px "Source Sans 3", sans-serif';c.textAlign='left';c.textBaseline='top';c.fillText(hz?'Hortonian runoff →':'saturation-excess runoff →',b.x+6,b.y+4);}
 }
 function drawTS(){
   const {c,w,h}=fit($('a-ts'));const L=A.s.log;
@@ -409,8 +444,8 @@ function drawTS(){
   const rmax=Math.max(10,...L.map(p=>Math.max(p.r,p.ro)))*1.1;
   const a1=axes(c,b1,{x:[0,TEND],y:[0,rmax],xt,noxl:true,yt:[0,Math.round(rmax/2)],yl:'mm/h',ylo:46});
   c.fillStyle=css('--water');L.forEach(p=>{if(p.r>0){const x=a1.X(p.t);c.fillRect(x,a1.Y(p.r),Math.max(1,a1.X(.25)-a1.X(0)),a1.Y(0)-a1.Y(p.r));}});
-  line(c,L.map(p=>[a1.X(p.t),a1.Y(p.ro)]),css('--warn'),2);
-  c.font=SANS;c.textAlign='right';c.textBaseline='top';c.fillStyle=css('--water');c.fillText('rain',b1.x+b1.w-6,b1.y+4);c.fillStyle=css('--warn');c.fillText('runoff',b1.x+b1.w-6,b1.y+19);
+  line(c,L.map(p=>[a1.X(p.t),a1.Y(p.rh||0)]),css('--warn'),2);line(c,L.map(p=>[a1.X(p.t),a1.Y(p.rs||0)]),css('--c3'),2);
+  c.font=SANS;c.textAlign='right';c.textBaseline='top';c.fillStyle=css('--water');c.fillText('rain',b1.x+b1.w-6,b1.y+4);c.fillStyle=css('--warn');c.fillText('Hortonian runoff',b1.x+b1.w-6,b1.y+19);c.fillStyle=css('--c3');c.fillText('saturation-excess runoff',b1.x+b1.w-6,b1.y+34);
   const a2=axes(c,b2,{x:[0,TEND],y:[0,.55],xt,noxl:true,yt:[0,.1,.2,.3,.4,.5]});
   c.save();c.translate(b2.x-54,b2.y+b2.h/2);c.rotate(-Math.PI/2);c.fillStyle=css('--muted');c.textBaseline='top';subText(c,'θ','v',0,12,15,'center');c.restore();
   [['a','--c1','10 cm'],['b','--c2','30 cm'],['c','--c3','60 cm']].forEach(([k,col,lab],j)=>{line(c,L.map(p=>[a2.X(p.t),a2.Y(p[k])]),css(col),2);
@@ -420,7 +455,7 @@ function drawTS(){
   const xn=a1.X(A.s.t);[b1,b2,b3].forEach(b=>line(c,[[xn,b.y],[xn,b.y+b.h]],css('--muted'),1,[2,3]));
 }
 function readA(){const S=A.s;const mm=v=>(v*1000).toFixed(1);
-  ro($('a-read'),[['Time',`${S.t.toFixed(1)}`,'h'],['Rain',mm(S.rain),'mm'],['Infiltrated',mm(S.inf),'mm'],['Runoff',mm(S.run),'mm'],['Evapotranspiration',mm(S.et),'mm'],['Net recharge',mm(S.rech),'mm'],['Water table',S.zw.toFixed(2),'m deep']]);}
+  ro($('a-read'),[['Time',`${S.t.toFixed(1)}`,'h'],['Rain',mm(S.rain),'mm'],['Infiltrated',mm(S.inf),'mm'],['Hortonian runoff (infiltration-excess)',mm(S.hort),'mm'],['Saturation-excess runoff',mm(S.satx),'mm'],['Evapotranspiration',mm(S.et),'mm'],['Net recharge',mm(S.rech),'mm'],['Water table',wtShown().toFixed(2),'m deep']]);}
 function syncA(){cacheRain();$('a-zw-o').textContent=(+$('a-zw').value).toFixed(2)+' m';$('a-rain-o').textContent=$('a-rain').value+' mm/h';$('a-dur-o').textContent=$('a-dur').value+' h';$('a-reps-o').textContent=$('a-reps').value;$('a-et-o').textContent=$('a-et').value+' mm/day';}
 $('a-preset').addEventListener('change',e=>{const p=PRESETS[e.target.value];if(p){$('a-rain').value=p[0];$('a-dur').value=p[1];$('a-reps').value=p[2];}syncA();});
 ['a-rain','a-dur','a-reps'].forEach(id=>$(id).addEventListener('input',()=>{$('a-preset').value='custom';syncA();}));
@@ -428,6 +463,8 @@ $('a-et').addEventListener('input',syncA);
 ['a-top','a-sub','a-zw','a-ante'].forEach(id=>$(id).addEventListener('input',()=>{syncA();resetA();}));
 $('a-run').addEventListener('click',()=>{if(A.s.t>=TEND)resetA();A.running=!A.running;$('a-run').textContent=A.running?'Pause':'Run';});
 $('a-reset').addEventListener('click',resetA);
+$('a-defaults').addEventListener('click',()=>{$('a-top').value='loam';$('a-sub').value='loam';$('a-zw').value=1.6;$('a-ante').value='dry';
+  $('a-preset').value='week';$('a-rain').value=8;$('a-dur').value=4;$('a-reps').value=3;$('a-et').value=3;$('a-speed').value='0.15';syncA();resetA();});
 
 // ================= TAB B: Darcy column =================
 // K: saturated hydraulic conductivity (m/s); n: effective porosity; d: grain size (m, for the Reynolds number); g: grain radius in the sketch (px)
@@ -581,6 +618,8 @@ function stopRun(record){B.flowing=false;$('b-stop').disabled=true;$('b-start').
 $('b-start').addEventListener('click',()=>{B.vol=0;B.watch=0;B.dropAcc=0;B.drops=[];B.msg='';B.flowing=true;$('b-stop').disabled=false;$('b-start').disabled=true;lock(true);});
 $('b-stop').addEventListener('click',()=>{stopRun(true);drawAll();});
 $('b-clear').addEventListener('click',()=>{B.records=[];renderTable();drawAll();});
+$('b-defaults').addEventListener('click',()=>{if(B.flowing)stopRun(false);$('b-mat').value='fsand';$('b-layer').checked=false;$('b-mat2').value='clay';$('b-frac').value=0.5;
+  $('b-L').value=30;$('b-dh').value=20;$('b-speed').value='1';$('b-ans').checked=false;$('b-showK').checked=false;B.vol=0;B.watch=0;B.msg='';B.grains=null;syncB();renderTable();drawAll();});
 function tickB(dtReal){const C=cfg();const sp=+$('b-speed').value;const dt=dtReal*sp;
   const h=$('b-rig').getBoundingClientRect().height;
   if(B.flowing){
