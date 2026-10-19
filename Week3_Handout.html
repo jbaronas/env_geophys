@@ -126,20 +126,21 @@ details.a>div{padding:2px 14px 10px}
 <div class="page">
 <p class="eyebrow">GEOL2331 Environmental Geophysics · Week 3 · Dr Jotis Baronas</p>
 <h1>Water in the ground: soil and groundwater hydrology</h1>
-<p class="lede">Notes, worksheets and answers for Tuesday 20 October 2026. The handout follows the lecture from top to bottom: the notes for each part, then the worksheet you do after it. The notes give the equations and the key ideas only, so add your own notes from the slides. Answers to every question are at the end (click to open).</p>
-<nav class="toc"><a href="#p1">Part 1 + core calculation</a><a href="#p2">Part 2 + Lab A</a><a href="#p3">Part 3 + Lab B</a><a href="#p4">Part 4 + class test practice</a><a href="#answers">Answers</a></nav>
+<p class="lede">Notes, worksheets and answers for Tuesday 20 October 2026. The handout follows the lecture from top to bottom: the notes for each part, then the worksheet you do after it. The notes give the equations and the key ideas only, so add your own notes from the slides. Answers to every question are at the end (click to open). The class test practice question at the end is for you to do at home.</p>
+<p class="small"><b>Online:</b> this handout and the Soil Water Lab are at <a href="https://jbaronas.github.io/env_geophys/">jbaronas.github.io/env_geophys</a>.</p>
+<nav class="toc"><a href="#p1">Part 1 + core calculation</a><a href="#p2">Part 2 + Lab A</a><a href="#p3">Part 3 + Lab B</a><a href="#exam">Class test practice (at home)</a><a href="#answers">Answers</a></nav>
 
 <div class="notes">
 <h3>Symbols and units</h3>
 <div class="tbl"><table class="mini">
 <tr><td><i>m</i><sub>w</sub>, <i>m</i><sub>wet</sub>, <i>m</i><sub>dry</sub></td><td>mass of water; of the fresh and dried sample (g)</td><td><i>φ</i>, <i>φ</i><sub>e</sub></td><td>porosity; effective porosity, the connected part (–)</td></tr>
 <tr><td><i>V</i><sub>w</sub>, <i>V</i><sub>a</sub>, <i>V</i><sub>t</sub></td><td>volume of water, air, total (cm³)</td><td><i>ψ</i><sub>m</sub></td><td>matric potential (kPa; negative)</td></tr>
-<tr><td><i>ρ</i><sub>b</sub>, <i>ρ</i><sub>p</sub>, <i>ρ</i><sub>w</sub></td><td>bulk, particle and water density (g/cm³)</td><td><i>h</i>, <i>z</i>, <i>ψ</i></td><td>hydraulic head, elevation, pressure head (m)</td></tr>
-<tr><td><i>θ</i><sub>g</sub>, <i>θ</i><sub>v</sub></td><td>water content by mass; by volume (–)</td><td><i>K</i><sub>sat</sub>, <i>K</i>(<i>θ</i><sub>v</sub>)</td><td>saturated and unsaturated hydraulic conductivity (m/s)</td></tr>
+<tr><td><i>ρ</i><sub>b</sub>, <i>ρ</i><sub>p</sub>, <i>ρ</i><sub>w</sub></td><td>bulk, particle and water density (g/cm³)</td><td><i>h</i></td><td>hydraulic head: the level water rises to in a well or piezometer (m)</td></tr>
+<tr><td><i>θ</i><sub>g</sub>, <i>θ</i><sub>v</sub></td><td>water content by mass; by volume (–)</td><td><i>K</i><sub>sat</sub></td><td>saturated hydraulic conductivity (m/s)</td></tr>
 <tr><td><i>S</i><sub>w</sub></td><td>saturation: fraction of pores full of water (–)</td><td><i>Q</i>, <i>q</i>, <i>v</i></td><td>discharge (m³/s), Darcy flux, seepage velocity (m/s)</td></tr>
-<tr><td><i>d</i>, <i>z</i></td><td>depth of water; thickness of soil (mm)</td><td><i>A</i>, <i>L</i>, Δ<i>h</i>, <i>i</i></td><td>area (m²), length (m), head difference (m), gradient Δ<i>h</i>/<i>L</i> (–)</td></tr>
+<tr><td><i>A</i>, <i>L</i>, Δ<i>h</i>, <i>i</i></td><td>area (m²), length (m), head difference (m), gradient Δ<i>h</i>/<i>L</i> (–)</td><td></td><td></td></tr>
 </table></div>
-<p class="small muted">1 mL = 1 cm³ = 10⁻⁶ m³ · 1 day = 86 400 s · 1 year ≈ 3.2 × 10⁷ s · 10 kPa ≈ 1 m of water</p>
+<p class="small muted">1 mL = 1 cm³ = 10⁻⁶ m³ · 1 day = 86 400 s · 1 year ≈ 3.2 × 10⁷ s</p>
 
 <h2 id="p1">Part 1 · How much water is in the soil?</h2>
 <div class="kcols">
@@ -147,7 +148,6 @@ details.a>div{padding:2px 14px 10px}
 <p class="k"><b>Gravimetric water content (<i>θ</i><sub>g</sub>):</b> mass of water per mass of dry soil.</p>
 <p class="k"><b>Volumetric water content (<i>θ</i><sub>v</sub>):</b> volume of water per volume of soil: what soil moisture probes measure.</p>
 <p class="k"><b>Saturation (<i>S</i><sub>w</sub>):</b> fraction of the pore space filled with water: 0 dry, 1 saturated.</p>
-<p class="k"><b>Measuring:</b> cores (weigh, dry at 105 °C, weigh again) are the reference. Probes and loggers record <i>θ</i><sub>v</sub> and the water level continuously at one point; cosmic-ray sensors, satellites and geophysics (Weeks 5–8) average over larger areas.</p>
 </div>
 <div class="eqgrid"><div>
 <div class="e"><span class="l"><i>m</i><sub>w</sub></span><span class="r">= <i>m</i><sub>wet</sub> − <i>m</i><sub>dry</sub></span><span class="n"></span></div>
@@ -158,14 +158,13 @@ details.a>div{padding:2px 14px 10px}
 <div class="e"><span class="l"><i>θ</i><sub>v</sub></span><span class="r">= <span class="fr"><span><i>V</i><sub>w</sub></span><span><i>V</i><sub>t</sub></span></span> = <i>θ</i><sub>g</sub> × <span class="fr"><span><i>ρ</i><sub>b</sub></span><span><i>ρ</i><sub>w</sub></span></span></span><span class="n"></span></div>
 <div class="e"><span class="l"><i>φ</i></span><span class="r">= <span class="fr"><span><i>V</i><sub>a</sub> + <i>V</i><sub>w</sub></span><span><i>V</i><sub>t</sub></span></span> = 1 − <span class="fr"><span><i>ρ</i><sub>b</sub></span><span><i>ρ</i><sub>p</sub></span></span></span><span class="n"></span></div>
 <div class="e"><span class="l"><i>S</i><sub>w</sub></span><span class="r">= <span class="fr"><span><i>θ</i><sub>v</sub></span><span><i>φ</i></span></span></span><span class="n"></span></div>
-<div class="e"><span class="l"><i>d</i></span><span class="r">= <i>θ</i><sub>v</sub> × <i>z</i></span><span class="n">depth of water, like rainfall</span></div>
 </div></div>
 </div>
 
 <div class="ws" id="core">
 <h3>Practical · Core calculation (after Part 1)</h3>
-<p><b>Worked example, River Browney soil:</b> <i>V</i><sub>t</sub> = 400 cm³, <i>m</i><sub>wet</sub> = 760 g, <i>m</i><sub>dry</sub> = 640 g, <i>ρ</i><sub>p</sub> = 2.85 g/cm³. So <i>m</i><sub>w</sub> = 120 g (<i>V</i><sub>w</sub> = 120 cm³), <i>ρ</i><sub>b</sub> = 1.60 g/cm³, <i>θ</i><sub>g</sub> = 0.19, <i>θ</i><sub>v</sub> = 0.30, <i>φ</i> = 0.44, <i>S</i><sub>w</sub> = 0.68, and the top 30 cm hold <i>d</i> = 0.30 × 300 mm = 90 mm of water. Write the units at every step, and cancel them.</p>
-<p class="q"><b>C1.</b> Moor House peat: <i>V</i><sub>t</sub> = 400 cm³, <i>m</i><sub>wet</sub> = 440 g, <i>m</i><sub>dry</sub> = 200 g, <i>ρ</i><sub>p</sub> = 1.45 g/cm³. Work out <i>m</i><sub>w</sub>, <i>ρ</i><sub>b</sub>, <i>θ</i><sub>g</sub>, <i>θ</i><sub>v</sub>, <i>φ</i>, <i>S</i><sub>w</sub> and the depth of water in the top 30 cm.</p>
+<p><b>Worked example, River Browney soil:</b> <i>V</i><sub>t</sub> = 400 cm³, <i>m</i><sub>wet</sub> = 760 g, <i>m</i><sub>dry</sub> = 640 g, <i>ρ</i><sub>p</sub> = 2.85 g/cm³. So <i>m</i><sub>w</sub> = 120 g (<i>V</i><sub>w</sub> = 120 cm³), <i>ρ</i><sub>b</sub> = 1.60 g/cm³, <i>θ</i><sub>g</sub> = 0.19, <i>θ</i><sub>v</sub> = 0.30, <i>φ</i> = 0.44, and <i>S</i><sub>w</sub> = 0.68. Write the units at every step, and cancel them.</p>
+<p class="q"><b>C1.</b> Moor House peat: <i>V</i><sub>t</sub> = 400 cm³, <i>m</i><sub>wet</sub> = 440 g, <i>m</i><sub>dry</sub> = 200 g, <i>ρ</i><sub>p</sub> = 1.45 g/cm³. Work out <i>m</i><sub>w</sub>, <i>ρ</i><sub>b</sub>, <i>θ</i><sub>g</sub>, <i>θ</i><sub>v</sub>, <i>φ</i> and <i>S</i><sub>w</sub>.</p>
 <div class="write tall"></div>
 <p class="q"><b>C2 (if you have time).</b> Little High Wood soil: <i>m</i><sub>wet</sub> = 620 g, <i>m</i><sub>dry</sub> = 520 g, <i>V</i><sub>t</sub> = 400 cm³. Its <i>θ</i><sub>g</sub> is the same as the River Browney soil's. Is its <i>θ</i><sub>v</sub> the same too? Why?</p>
 <div class="write"></div>
@@ -174,19 +173,14 @@ details.a>div{padding:2px 14px 10px}
 <div class="notes">
 <h2 id="p2">Part 2 · Infiltration and unsaturated flow</h2>
 <div class="kcols">
-<p class="k"><b>Cohesion, adhesion, surface tension:</b> water molecules attract each other (cohesion) and solid surfaces (adhesion); at an air–water surface cohesion pulls the surface tight.</p>
 <p class="k"><b>Capillarity:</b> narrow pores pull water in and up and hold it: rise <i>h</i> = 0.15 cm² / <i>r</i> (<i>h</i> and pore radius <i>r</i> in cm).</p>
 <p class="k"><b>Matric potential (<i>ψ</i><sub>m</sub>):</b> the negative pressure of water held in pores: 0 kPa when saturated, more negative as soil dries. Suction is the same number without the minus sign. Measured with a tensiometer (to about −85 kPa).</p>
-<p class="k"><b>Soil water potential (<i>ψ</i>):</b> energy of soil water compared with pure, free water: <i>ψ</i> = <i>ψ</i><sub>g</sub> + <i>ψ</i><sub>m</sub> + <i>ψ</i><sub>o</sub> (+ <i>ψ</i><sub>h</sub> below the water table). Water moves from high to low potential.</p>
 <p class="k"><b>Field capacity (FC):</b> water left once gravity drainage stops, 1–3 days after soaking (<i>ψ</i><sub>m</sub> ≈ −10 to −30 kPa).</p>
 <p class="k"><b>Wilting coefficient:</b> water left when plants can take no more and wilt (<i>ψ</i><sub>m</sub> ≈ −1500 kPa).</p>
 <p class="k"><b>Available water-holding capacity (AWHC):</b> field capacity − wilting coefficient: the water plants can use.</p>
 <p class="k"><b>Evapotranspiration (ET):</b> evaporation + transpiration through plant stomata, in mm per day.</p>
 <p class="k"><b>Saturated hydraulic conductivity (<i>K</i><sub>sat</sub>):</b> how fast water flows through soil when every pore is full and only gravity pulls (mm/h or m/s).</p>
 <p class="k"><b>Infiltration capacity:</b> the fastest rate the soil surface can take in water. It is high in dry soil and falls towards <i>K</i><sub>sat</sub> as the soil wets.</p>
-<p class="k"><b>Hortonian (infiltration-excess) runoff:</b> rain falls faster than the infiltration capacity.</p>
-<p class="k"><b>Saturation-excess runoff:</b> rain falls on ground that is already saturated, however gently.</p>
-<p class="k"><b>Wetting front:</b> the sharp boundary between wet soil above and drier soil below, moving down as water soaks in.</p>
 <p class="k"><b>Preferential flow:</b> fast flow through cracks, root channels and burrows that bypasses the soil matrix.</p>
 </div>
 <p class="small"><b>Lab A soils</b> (Rawls et al. 1982 class averages):</p>
@@ -227,8 +221,9 @@ details.a>div{padding:2px 14px 10px}
 </div>
 
 <div class="task"><h4>Task A3 · Saturation-excess runoff (core)</h4>
+<p>So far, all the runoff has been Hortonian: rain falling faster than the soil can take it in (lecture Part 2). The lab also reports a second kind, <b>saturation-excess runoff</b>. When the soil is already saturated right up to the surface, there is no room left for more water, so rain cannot soak in however gently it falls, and it runs off.</p>
 <div class="set"><b>Settings:</b> Reset all settings, then change <b>Subsoil</b> to <b>Clay</b>, <b>Water table depth</b> to <b>0.40 m</b>, and <b>Before the rain</b> to <b>Wet</b>. Run.</div>
-<p class="q"><b>A3 (a)</b> How much water runs off, which type of runoff is it, and during which burst does it start?</p><div class="write"></div>
+<p class="q"><b>A3 (a)</b> How much water runs off, of which kind, and during which burst does it start?</p><div class="write"></div>
 <p class="q"><b>A3 (b)</b> The rain (8 mm/h) never exceeds the loam topsoil's <i>K</i><sub>sat</sub> (13 mm/h), yet water runs off. Why? Watch the water table and the profile graph.</p><div class="write"></div>
 <p class="q"><b>A3 (c)</b> Change <b>Subsoil</b> back to <b>Loam</b> (keep the other settings) and run again. What changes, and why?</p><div class="write"></div>
 </div>
@@ -258,14 +253,9 @@ details.a>div{padding:2px 14px 10px}
 </div><div>
 <div class="e"><span class="l"><i>v</i></span><span class="r">= <span class="fr"><span><i>q</i></span><span><i>φ</i><sub>e</sub></span></span></span><span class="n">seepage velocity: the real speed in the pores</span></div>
 <div class="e"><span class="l"><i>t</i></span><span class="r">= <span class="fr"><span>distance</span><span><i>v</i></span></span></span><span class="n">travel time</span></div>
-<div class="e"><span class="l"><i>h</i></span><span class="r">= <i>z</i> + <i>ψ</i></span><span class="n">hydraulic head</span></div>
 </div></div>
 <div class="kcols">
 <p class="k"><b>Darcy's law:</b> flow through a saturated material is proportional to its <i>K</i><sub>sat</sub>, its cross-sectional area and the hydraulic gradient.</p>
-<p class="k"><b>Darcy flux and seepage velocity:</b> <i>q</i> spreads the flow over the whole area, grains included; water really moves faster, at <i>v</i> = <i>q</i>/<i>φ</i><sub>e</sub>.</p>
-<p class="k"><b>Hydraulic head (<i>h</i>):</b> the height water rises to in a piezometer; water flows from high to low head.</p>
-<p class="k"><b>Unsaturated conductivity, <i>K</i>(<i>θ</i><sub>v</sub>):</b> lower than <i>K</i><sub>sat</sub>, because water flows only through the pores that are still full; it falls steeply as soil dries. Above the water table <i>ψ</i> is negative.</p>
-<p class="k"><b>Porosity is not permeability:</b> what matters is how big the pores are and whether they connect. Clay has the most pore space but tiny pores.</p>
 <p class="k"><b>Perched water table:</b> water held up by a layer with low <i>K</i><sub>sat</sub> (clay, dense till), above the regional water table.</p>
 <p class="k"><b>Aquifer:</b> rock or sediment that holds groundwater and lets it flow fast enough to supply wells and springs.</p>
 <p class="k"><b>Groundwater recharge:</b> water that drains below the roots to the water table: in the UK mostly October to March, once soils are back at field capacity.</p>
@@ -338,18 +328,9 @@ details.a>div{padding:2px 14px 10px}
 </div>
 </div>
 
-<div class="notes">
-<h2 id="p4">Part 4 · From hillslopes to rivers</h2>
-<div class="kcols">
-<p class="k"><b>Overland flow:</b> fast flow over the surface: Hortonian (rain faster than the soil can take in) or saturation-excess (ground already full).</p>
-<p class="k"><b>Throughflow:</b> sideways flow through the soil, above a less permeable layer.</p>
-<p class="k"><b>Groundwater flow and baseflow:</b> slow flow through the aquifer to the river; the groundwater part of river flow, baseflow, keeps rivers flowing between storms.</p>
-</div>
-</div>
-
 <div class="ws" id="exam">
-<h3>Class test practice question: salt on the road (10 marks)</h3>
-<p>Practice for the class test: try it <b>closed book</b>. As in the test, the more advanced formulas are given with the question; the basic ones (porosity, water content) are not. Work on your own first, then compare with a neighbour. Write the units at every step.</p>
+<h3>Class test practice question, at home: salt on the road (10 marks)</h3>
+<p>Practice for the class test, to do at home: try it <b>closed book</b>. As in the test, the more advanced formulas are given with the question; the basic ones (porosity, water content) are not. Work on your own first, then check the mark scheme at the end. Write the units at every step.</p>
 <p>In winter, gritters spread salt on the A1(M) near Durham. When the snow and ice melt, salty meltwater soaks into the grass verge beside the road. Beneath the verge there are three layers: 0.3 m of compacted topsoil, then 5 m of glacial till, then the Magnesian Limestone aquifer, which supplies drinking water.</p>
 <ol type="a">
   <li>You take a soil core from the verge. The core has a volume of 400 cm³. It weighs 720 g when fresh and 600 g after oven-drying. The particle density of the soil (ρ<sub>p</sub>) is 2.65 g/cm³. Calculate the volumetric water content (θ<sub>v</sub>) of the soil and its saturation (S<sub>w</sub>). <b>[3 marks]</b></li>
@@ -365,10 +346,10 @@ details.a>div{padding:2px 14px 10px}
 <h2>Answers</h2>
 <p class="small muted">Try each question first, then click to check. (The answers are not printed.)</p>
 <h3>Core calculation</h3>
-<details class="a"><summary>C1 · Moor House peat</summary><div><i>m</i><sub>w</sub> = 440 g − 200 g = 240 g (<i>V</i><sub>w</sub> = 240 cm³) · <i>ρ</i><sub>b</sub> = 200 g / 400 cm³ = 0.50 g/cm³ · <i>θ</i><sub>g</sub> = 240 g / 200 g = 1.20 · <i>θ</i><sub>v</sub> = 240 cm³ / 400 cm³ = 0.60 · <i>φ</i> = 1 − 0.50/1.45 = 0.66 · <i>S</i><sub>w</sub> = 0.60/0.66 = 0.91 · <i>d</i> = 0.60 × 300 mm = 180 mm. <i>θ</i><sub>g</sub> can be above 1 (peat holds more water than its own dry mass), but <i>θ</i><sub>v</sub> can never be above <i>φ</i>.</div></details>
+<details class="a"><summary>C1 · Moor House peat</summary><div><i>m</i><sub>w</sub> = 440 g − 200 g = 240 g (<i>V</i><sub>w</sub> = 240 cm³) · <i>ρ</i><sub>b</sub> = 200 g / 400 cm³ = 0.50 g/cm³ · <i>θ</i><sub>g</sub> = 240 g / 200 g = 1.20 · <i>θ</i><sub>v</sub> = 240 cm³ / 400 cm³ = 0.60 · <i>φ</i> = 1 − 0.50/1.45 = 0.66 · <i>S</i><sub>w</sub> = 0.60/0.66 = 0.91. <i>θ</i><sub>g</sub> can be above 1 (peat holds more water than its own dry mass), but <i>θ</i><sub>v</sub> can never be above <i>φ</i>.</div></details>
 <details class="a"><summary>C2 · Little High Wood</summary><div><i>m</i><sub>w</sub> = 100 g, so <i>θ</i><sub>g</sub> = 100 g / 520 g = 0.19, the same as the River Browney soil. But <i>θ</i><sub>v</sub> = 100 cm³ / 400 cm³ = 0.25, not 0.30, because its bulk density is lower (520 g / 400 cm³ = 1.30 against 1.60 g/cm³). Always say whether a water content is by mass or by volume.</div></details>
 <h3>Lab A</h3>
-<details class="a"><summary>A1 · Predict, then run</summary><div>(a) The 10 cm probe starts to rise about 2 hours after the rain starts (hour 8) and peaks at the end of each burst (hours 10, 34 and 58), drying a little in between. The 30 cm probe first rises at about hour 16, with a smaller, smoother step after each burst. The 60 cm probe barely moves until about hour 53, after the second burst has soaked in, and peaks only at about hour 74 (θ<sub>v</sub> ≈ 0.35). The water table hardly moves: it actually falls slightly, from 1.60 to 1.65 m. (b) Each layer has to wet up and store water before it passes any on, and the soil ahead of the wetting front is unsaturated, so its conductivity <i>K</i>(θ<sub>v</sub>) is far below K<sub>sat</sub>. Each pulse slows and spreads as it goes down, and the bursts merge into one slow rise at depth. (c) All 96 mm infiltrated, with no runoff. Evapotranspiration took about 13.5 mm. The net recharge is about −28 mm: the dry soil pulled water up from the water table (capillary rise), which is why the water table fell. So by hour 120 the soil holds about 96 − 13.5 + 28 ≈ 110 mm more water than at the start.</div></details>
+<details class="a"><summary>A1 · Predict, then run</summary><div>(a) The 10 cm probe starts to rise about 2 hours after the rain starts (hour 8) and peaks at the end of each burst (hours 10, 34 and 58), drying a little in between. The 30 cm probe first rises at about hour 16, with a smaller, smoother step after each burst. The 60 cm probe barely moves until about hour 53, after the second burst has soaked in, and peaks only at about hour 74 (θ<sub>v</sub> ≈ 0.35). The water table hardly moves: it actually falls slightly, from 1.60 to 1.65 m. (b) Each layer has to wet up and store water before it passes any on, and soil that is only partly wet lets water through far more slowly than saturated soil (K<sub>sat</sub>). Each pulse slows and spreads as it goes down, and the bursts merge into one slow rise at depth. (c) All 96 mm infiltrated, with no runoff. Evapotranspiration took about 13.5 mm. The net recharge is about −28 mm: the dry soil pulled water up from the water table (capillary rise), which is why the water table fell. So by hour 120 the soil holds about 96 − 13.5 + 28 ≈ 110 mm more water than at the start.</div></details>
 <details class="a"><summary>A2 · Soil texture</summary><div><table class="mini"><tr><th>Topsoil</th><th>K<sub>sat</sub> (mm/h)</th><th>Rain faster?</th><th>Infiltrated</th><th>Hortonian runoff</th></tr><tr><td>Sand</td><td>210</td><td>no</td><td>96 mm</td><td>0</td></tr><tr><td>Loam</td><td>13</td><td>no</td><td>96 mm</td><td>0</td></tr><tr><td>Silt loam</td><td>6.8</td><td>yes</td><td>96 mm</td><td>0</td></tr><tr><td>Clay</td><td>0.6</td><td>yes</td><td>about 38 mm</td><td>about 58 mm</td></tr></table>(a) Only the clay. Its runoff starts within an hour of each burst. (b) K<sub>sat</sub> is the infiltration rate of a soil that is already saturated. A dry soil also pulls water in by suction, so its infiltration capacity starts well above K<sub>sat</sub> and only falls towards it as the topsoil wets up. Each 4-hour burst ends before the silt loam topsoil is saturated, and evapotranspiration dries it between bursts, so its capacity never drops below 8 mm/h. Rain faster than K<sub>sat</sub> is necessary for Hortonian runoff, but not enough on its own: it also has to last long enough.</div></details>
 <details class="a"><summary>A3 · Saturation-excess runoff</summary><div>(a) About 29 mm of the 96 mm runs off, all as saturation-excess runoff, starting in the second burst (about hour 32). (b) The clay subsoil barely lets water through, so the profile fills up from below. In the first burst the water table rises from 0.40 m to within about 1 cm of the surface, but the topsoil never quite fills, so there is no runoff yet. In the second burst it reaches the surface: the whole profile is saturated, so rain cannot get in, however gently it falls. After each burst the soil drains and the water table falls back over a few hours, to about 0.3 m. (c) With a loam subsoil, water drains away below, the water table rises only to about 0.24 m, and all 96 mm infiltrates with no runoff.</div></details>
 <details class="a"><summary>A4 · Wetness before a storm</summary><div>Hortonian runoff from the thunderstorm grows with the starting wetness: about 7 mm on a dry start, 10 mm on a normal start and 14 mm on a wet start. A dry soil pulls water in by suction, so its infiltration capacity starts higher and takes longer to fall towards K<sub>sat</sub>. This is why the same storm causes bigger floods after a wet spell (antecedent conditions).</div></details>
@@ -382,7 +363,7 @@ details.a>div{padding:2px 14px 10px}
 <details class="a"><summary>B5 · Clay</summary><div>K<sub>sat</sub> = 10⁻¹⁰ m/s, so at <i>i</i> = 0.67, <i>Q</i> ≈ 5 × 10⁻⁷ mL/s: 10 mL takes about 2 × 10⁷ s, roughly 220 days. That is far too long for a laboratory test: the sample could dry, grow microbes or leak, and evaporation from the cylinder would be larger than the flow. Laboratories test clays with a <b>falling-head test</b> instead. A narrow standpipe sits on top of the sample, and there is no constant supply. As water seeps through the sample, the level in the standpipe falls, and you time how long it takes to fall from one height to another. Because the standpipe is narrow, even a tiny volume of flow makes the level drop by a measurable amount, so the test takes hours to days rather than months. K<sub>sat</sub> comes from the standpipe and sample areas, the sample length and the ratio of the starting and final heights. Clays are also tested under pressure in sealed cells, which raises the gradient, and in the field with borehole tests, which also capture fractures that a small core misses (Task B7).</div></details>
 <details class="a"><summary>B6 · Seepage velocity</summary><div><i>q</i> = K<sub>sat</sub> × <i>i</i> = 1 × 10⁻⁴ m/s × 0.01 = 1 × 10⁻⁶ m/s ≈ 0.086 m/day. <i>v</i> = <i>q</i>/φ<sub>e</sub> = 0.086 / 0.32 ≈ 0.27 m/day. Travel time = 1000 m / 0.27 m/day ≈ 3700 days, about 10 years.</div></details>
 <details class="a"><summary>B7 · Core against borehole</summary><div>(a) Any three. Fractures and joints in the till (from drying, freezing or ice movement), and root channels and worm burrows, carry water quickly; a small core usually misses them, while 5 m of borehole crosses many. Lenses and layers of sand and gravel inside the till do the same. A larger volume is more likely to include connected fast pathways (a scale effect). Drilling and trimming can squash the core and close its cracks. K<sub>sat</sub> may also differ between horizontal and vertical directions. (b) The higher, field-scale value, and perhaps a worst case beyond it. Pollutants travel along the fastest connected pathways (preferential flow), so the core value would underestimate the risk about 1000-fold. Through fractures with a tiny effective porosity, water can cross 5 m of till in days to weeks rather than decades. This is one reason slurry spreading is restricted near boreholes and springs.</div></details>
-<details class="a"><summary>B8 · A landfill liner</summary><div>(a) Take the base of the liner as the datum. The head at the top of the liner is 1 m + 0.3 m = 1.3 m, and at the base it is 0, so Δ<i>h</i> = 1.3 m, <i>L</i> = 1 m and <i>i</i> = 1.3. <i>q</i> = K<sub>sat</sub> × <i>i</i> = 1 × 10⁻⁹ m/s × 1.3 = 1.3 × 10⁻⁹ m/s; × 3.2 × 10⁷ s/yr ≈ 0.042 m/yr ≈ 42 mm per year over every square metre of the base. <i>v</i> = <i>q</i>/φ<sub>e</sub> = 0.042/0.05 ≈ 0.83 m/yr, so leachate crosses the 1 m liner in about 1.2 years. A landfill produces leachate for decades, so a clay liner alone only delays leakage. (b) Darcy’s law: <i>q</i> is proportional to the gradient. With the leachate kept at a few centimetres instead of a metre or more, Δ<i>h</i> and so <i>q</i> stay small; the membrane above the clay cuts the flow far further. (c) Any of: the clay dries and cracks before it is covered, or freezes; it was badly compacted or contains stones and roots; the leachate attacks the clay and changes its structure; tears or poor seams in the membrane; the drainage layer clogs, so leachate builds up and the gradient rises.</div></details>
+<details class="a"><summary>B8 · A landfill liner</summary><div>(a) The leachate surface stands 0.3 m + 1 m = 1.3 m above the base of the liner, where water drains out freely, so the water level drops by Δ<i>h</i> = 1.3 m across <i>L</i> = 1 m of clay, and <i>i</i> = 1.3. <i>q</i> = K<sub>sat</sub> × <i>i</i> = 1 × 10⁻⁹ m/s × 1.3 = 1.3 × 10⁻⁹ m/s; × 3.2 × 10⁷ s/yr ≈ 0.042 m/yr ≈ 42 mm per year over every square metre of the base. <i>v</i> = <i>q</i>/φ<sub>e</sub> = 0.042/0.05 ≈ 0.83 m/yr, so leachate crosses the 1 m liner in about 1.2 years. A landfill produces leachate for decades, so a clay liner alone only delays leakage. (b) Darcy’s law: <i>q</i> is proportional to the gradient. With the leachate kept at a few centimetres instead of a metre or more, Δ<i>h</i> and so <i>q</i> stay small; the membrane above the clay cuts the flow far further. (c) Any of: the clay dries and cracks before it is covered, or freezes; it was badly compacted or contains stones and roots; the leachate attacks the clay and changes its structure; tears or poor seams in the membrane; the drainage layer clogs, so leachate builds up and the gradient rises.</div></details>
 <details class="a"><summary>B9 · Soakaways on till</summary><div>(a) No. Till has a K<sub>sat</sub> of roughly 10⁻⁹ to 10⁻⁷ m/s, about 0.004 to 0.4 mm/h. A 100 m² roof in rain of 10 mm/h sheds 1 m³ an hour, while a soakaway with 10 m² of pit walls and floor in till could take in only about 0.004 m³ an hour at best. The pits fill and overflow. In winter the soil and till are already near saturation (Lab A, Task A3), so there is no storage left, and water ponds and runs off as saturation-excess runoff, flooding gardens and roads. (b) Sustainable drainage that stores water and releases it slowly to a stream: ponds and basins, swales, permeable paving over a storage layer, green roofs, rainwater harvesting. Digging through the till removes the low-permeability layer that protects the aquifer (Task B4). Runoff from roads carries oil, metals, road salt and nutrients, and it would reach the fractured limestone almost directly, with little time for filtering or breakdown, close to boreholes used for drinking water.</div></details>
 <h3>Class test practice: mark scheme</h3>
 <details class="a"><summary>(a) [3 marks]</summary><div>m<sub>w</sub> = 720 g − 600 g = 120 g, so V<sub>w</sub> = 120 cm³ and θ<sub>v</sub> = 120 cm³ / 400 cm³ = 0.30 [1]. ρ<sub>b</sub> = 600 g / 400 cm³ = 1.50 g/cm³; φ = 1 − 1.50/2.65 = 0.43 [1]. S<sub>w</sub> = 0.30 / 0.43 = 0.70 [1].</div></details>
