@@ -59,6 +59,8 @@ h3{font-size:17px;font-weight:700}
 @media (max-width:1100px){.labB{grid-template-columns:300px minmax(0,1fr)}.labB>.side{grid-column:1/-1}}
 @media (max-width:760px){.lab,.labB{grid-template-columns:minmax(0,1fr)}}
 .col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.labB>.refwide{grid-column:1/-1}
+.warnbox{background:var(--warn-soft);color:var(--ink);border-left:4px solid var(--warn);border-radius:6px;padding:10px 12px;font-size:15px;line-height:1.45}
 .controls{display:flex;flex-direction:column;gap:12px}
 .field{display:flex;flex-direction:column;gap:4px}
 .field label,.lbl{font-size:15px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:8px}
@@ -200,7 +202,7 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
     <div class="grid2">
       <div>
         <h3>What the lab shows</h3>
-        <p>A constant-head permeameter, the standard laboratory test for the saturated hydraulic conductivity, <span class="m">K</span><sub>sat</sub>. A column 10 cm across (cross-sectional area <span class="m">A</span> = 78.5 cm²) holds a sample of length <span class="m">L</span>. An overflow keeps the water level above the sample constant. The outlet tube ends Δ<span class="m">h</span> lower, so Δ<span class="m">h</span> is the head difference that pushes water through the sample. The sketch is drawn to scale vertically, so you can see <span class="m">L</span> and Δ<span class="m">h</span> change.</p>
+        <p>A constant-head permeameter, the standard laboratory test for the saturated hydraulic conductivity, <span class="m">K</span><sub>sat</sub>. A column 10 cm across (cross-sectional area <span class="m">A</span> = 78.5 cm²) holds a sample of length <span class="m">L</span>. An overflow keeps the water level above the sample constant. The outlet tube ends Δ<span class="m">h</span> lower, so Δ<span class="m">h</span> is the head difference that drives flow through the sample. Three piezometer tubes show the hydraulic head at the top, middle (or layer boundary) and bottom of the sample. The sketch is drawn to scale vertically, so you can see <span class="m">L</span> and Δ<span class="m">h</span> change.</p>
         <h3>The controls (left)</h3>
         <ul>
           <li><b>Sample:</b> a material, or Mystery A or B. Tick <b>Two layers</b> to put a second material under the first.</li>
@@ -210,6 +212,13 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
         </ul>
       </div>
       <div>
+        <h3>Reading the sketch</h3>
+        <ul>
+          <li><b>Supply and overflow.</b> Water runs in all the time. Whatever the sample cannot take spills out of the overflow, so the water level above the sample, and therefore Δ<span class="m">h</span>, stays constant. With a slow sample nearly all the supply goes down the overflow.</li>
+          <li><b>The sample is saturated</b> (tinted blue): water fills all its pores, in both layers.</li>
+          <li><b>Piezometer tubes.</b> The water in each tube rises to the hydraulic head at its port. With the tap closed nothing flows, so the head is the same everywhere and all three stand at the reservoir level. Open the tap and they fall to the heads of the flowing water, matching the head graph on the right.</li>
+          <li><b>Blue dots</b> move at the seepage velocity <span class="m">v</span> = <span class="m">q</span>/φ<sub>e</sub>. With two layers the flux <span class="m">q</span> is the same in both, so the water moves fastest through the pores of the layer with the smaller effective porosity φ<sub>e</sub>.</li>
+        </ul>
         <h3>Making a measurement</h3>
         <ol class="steps">
           <li><b>Start</b> opens the tap, empties the measuring cylinder and starts the stopwatch. Water flows down through the sample and drips into the cylinder.</li>
@@ -237,9 +246,8 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
           <select id="b-speed"><option value="1">Real time</option><option value="60">×60: 1 s is 1 minute</option><option value="3600">×3600: 1 s is 1 hour</option><option value="86400">×86 400: 1 s is 1 day</option></select></div>
         <button class="btn ghost" id="b-defaults">Reset all settings</button>
       </aside>
-      <figure class="panel"><figcaption><b>Typical K<sub>sat</sub> of materials</b> (ranges after Freeze &amp; Cherry 1979, log scale). The blue line marks your sample; it is hidden for the mystery samples.</figcaption><canvas id="b-ref" style="--h:240px"></canvas></figure>
     </div>
-    <figure class="panel"><figcaption><b>The permeameter.</b> The overflow keeps the water level above the sample constant. Water flows down through the sample and out of the tube into the measuring cylinder. Heights are to scale: Δ<span class="m">h</span> is the drop from the water level above the sample to the outlet.</figcaption><canvas id="b-rig" style="--h:540px"></canvas></figure>
+    <figure class="panel"><figcaption><b>The permeameter</b>, drawn to scale vertically. The overflow keeps the water level above the saturated sample constant. The piezometer tubes on the left show the hydraulic head at the top, middle (or layer boundary) and bottom of the sample. The blue dots move at the seepage velocity.</figcaption><canvas id="b-rig" style="--h:680px"></canvas></figure>
     <div class="panel col side">
       <div>
         <div class="lbl">Stopwatch</div>
@@ -252,8 +260,9 @@ td{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px}
       <div class="readouts" id="b-read"></div>
       <div id="b-warn"></div>
       <label class="check"><input type="checkbox" id="b-ans"> Show the answers (to check your working)</label>
-      <figure><figcaption><b>Hydraulic head along the sample.</b> Head falls from Δ<span class="m">h</span> at the top to 0 at the outlet level. The steeper the line, the bigger the gradient <span class="m">i</span> = Δ<span class="m">h</span>/<span class="m">L</span> pushing the water.</figcaption><canvas id="b-head" style="--h:220px"></canvas></figure>
+      <figure><figcaption><b>Hydraulic head along the sample.</b> Head falls from Δ<span class="m">h</span> at the top to 0 at the outlet level. The steeper the line, the larger the hydraulic gradient <span class="m">i</span> = Δ<span class="m">h</span>/<span class="m">L</span>. The piezometer tubes in the sketch show the same heads.</figcaption><canvas id="b-head" style="--h:220px"></canvas></figure>
     </div>
+    <figure class="panel refwide"><figcaption><b>Typical K<sub>sat</sub> of materials</b> (ranges after Freeze &amp; Cherry 1979, log scale). The blue line marks your sample; it is hidden for the mystery samples. The ranges overlap, so K<sub>sat</sub> alone rarely identifies a material.</figcaption><canvas id="b-ref" style="--h:250px"></canvas></figure>
   </div>
   <div class="grid2">
     <div class="panel">
@@ -467,7 +476,7 @@ $('a-defaults').addEventListener('click',()=>{$('a-top').value='loam';$('a-sub')
   $('a-preset').value='week';$('a-rain').value=8;$('a-dur').value=4;$('a-reps').value=3;$('a-et').value=3;$('a-speed').value='0.15';syncA();resetA();});
 
 // ================= TAB B: Darcy column =================
-// K: saturated hydraulic conductivity (m/s); n: effective porosity; d: grain size (m, for the Reynolds number); g: grain radius in the sketch (px)
+// K: saturated hydraulic conductivity (m/s); n: effective porosity; d: grain size (m, for the Reynolds number); g: grain radius in the sketch (px); mix: a few stones in a fine matrix
 const MATS={
   gravel:{name:'Gravel',K:1e-2,n:.25,d:5e-3,g:6.5},
   csand:{name:'Coarse sand',K:1e-3,n:.30,d:1e-3,g:3.6},
@@ -475,10 +484,10 @@ const MATS={
   ssand:{name:'Silty sand',K:1e-5,n:.28,d:8e-5,g:1.7},
   silt:{name:'Silt (loess)',K:1e-7,n:.20,d:3e-5,g:1.2},
   peat:{name:'Peat (humified)',K:1e-7,n:.10,d:1e-4,g:1.5,peat:true},
-  till:{name:'Glacial till',K:5e-9,n:.05,d:1e-5,g:1.0,mix:true},
+  till:{name:'Glacial till',K:5e-9,n:.05,d:1e-5,g:.9,mix:true},
   clay:{name:'Clay',K:1e-10,n:.03,d:2e-6,g:.8},
   mysA:{name:'Mystery A',K:2.5e-4,n:.30,d:4e-4,g:2.6,hide:true},
-  mysB:{name:'Mystery B',K:3e-6,n:.25,d:5e-5,g:1.5,hide:true}
+  mysB:{name:'Mystery B',K:5e-10,n:.04,d:5e-6,g:.9,hide:true}
 };
 const REF=[['Gravel',-4,-1],['Clean sand',-6,-2],['Silty sand',-7,-3],['Silt, loess',-9,-5],['Peat',-8,-3],['Glacial till',-12,-6],['Clay',-12,-9]];
 $('b-mat').innerHTML=Object.entries(MATS).map(([k,m])=>`<option value="${k}">${m.name}</option>`).join('');$('b-mat').value='fsand';
@@ -486,53 +495,82 @@ $('b-mat2').innerHTML=Object.entries(MATS).filter(([k,m])=>!m.hide).map(([k,m])=
 const AREA=Math.PI*0.05*0.05;   // m², column 10 cm across
 const DROP=0.05;                // mL per drop
 const CYL=1000;                 // measuring cylinder, mL
-const B={flowing:false,vol:0,watch:0,records:[],parts:[],grains:null,drops:[],dropAcc:0,last:performance.now(),msg:'',calc:'example'};
+const B={flowing:false,vol:0,watch:0,records:[],parts:[],grains:null,tex:null,ph:null,drops:[],dropAcc:0,last:performance.now(),msg:'',calc:'example'};
 function cfg(){const L=+$('b-L').value,dh=+$('b-dh').value,m1=MATS[$('b-mat').value],lay=$('b-layer').checked,m2=MATS[$('b-mat2').value],f=+$('b-frac').value;
   let Keff=m1.K,label=m1.name,l1=L,l2=0;
   if(lay){l1=L*f;l2=L-l1;Keff=L/(l1/m1.K+l2/m2.K);label=`${m1.name} over ${m2.name}`;}
   const i=dh/L,q=Keff*i,Q=q*AREA*1e6; // Q in mL/s
   return {L,dh,m1,m2,lay,f,l1,l2,Keff,label,i,q,Q,mys:(m1.hide||(lay&&m2.hide))};}
-function makeGrains(){const C=cfg();const g=[];let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
-  for(let j=0;j<900;j++){const y=rnd(),x=rnd();const m=C.lay&&y>C.f?C.m2:C.m1;let r=m.g*(.7+.6*rnd());if(m.mix&&rnd()<.08)r=5+rnd()*4;
-    if(r*r*j/900>60&&r>3&&j>250)continue;g.push({x,y,r});}
-  B.grains=g;B.parts=Array.from({length:36},(_,j)=>({x:rnd(),y:rnd()}));}
+function makeGrains(){let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  B.grains=true;B.tex=null;B.parts=Array.from({length:40},()=>({x:rnd(),y:rnd()}));}
+// grains for one layer, drawn as two paths: the fine grains, plus a few stones for till. Enough grains to cover about half the area, so fine materials look dense, not sparse
+function grainPaths(m,x0,y0,w,hh,seed){let sd=seed;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647;};
+  const fine=new Path2D(),big=new Path2D();const n=Math.min(9000,Math.round(.55*w*hh/(Math.PI*m.g*m.g)));
+  for(let j=0;j<n;j++){const r=m.g*(.7+.6*rnd()),x=x0+rnd()*w,y=y0+rnd()*hh;fine.moveTo(x+r,y);fine.arc(x,y,r,0,7);}
+  if(m.mix){const nb=Math.max(2,Math.round(w*hh/1400));for(let j=0;j<nb;j++){const r=2.2+rnd()*2.6,x=x0+r+rnd()*(w-2*r),y=y0+r+rnd()*(hh-2*r);big.moveTo(x+r,y);big.arc(x,y,r,0,7);}}
+  return {m,fine,big,box:[x0,y0,w,hh]};}
 function geom(w,h){const C=cfg();
-  const yRes=60,s=(h-yRes-178)/100;                 // px per cm: the largest head difference (100 cm) fits above the cylinder
-  const colW=62,colX=Math.max(58,Math.min(96,w*.17)),colTop=yRes+10,colBot=colTop+C.L*s;
+  const yRes=64,s=(h-yRes-166)/100;                 // px per cm: the largest head difference (100 cm) fits above the cylinder
+  const colW=84,colX=Math.max(84,Math.min(118,w*.2)),colTop=yRes+18,colBot=colTop+C.L*s;
   const yOut=yRes+C.dh*s,pipeX=colX+colW+52,spoutX=pipeX+40;
-  const cylW=58,cylX=spoutX-cylW/2,cylBot=h-16,cylTop=h-160;
+  const cylW=58,cylX=spoutX-cylW/2,cylBot=h-16,cylTop=h-146;
   const annX=Math.min(w-110,spoutX+62);
   return {C,yRes,s,colW,colX,colTop,colBot,yOut,pipeX,spoutX,cylW,cylX,cylBot,cylTop,annX};}
+// head (cm above the outlet) at the three piezometer ports: top of the sample, the layer boundary (or the middle), the bottom.
+// With the tap closed nothing flows, so the head is the same everywhere: the reservoir level.
+function pzPorts(C){return [0,C.lay?C.l1:C.L/2,C.L];}
+function pzTarget(C){if(!B.flowing)return [C.dh,C.dh,C.dh];
+  const mid=C.lay?C.dh*(C.l2/C.m2.K)/(C.l1/C.m1.K+C.l2/C.m2.K):C.dh/2;return [C.dh,mid,0];}
 function drawRig(){
   const {c,w,h}=fit($('b-rig'));const G=geom(w,h),C=G.C;
-  const {yRes,colW,colX,colTop,colBot,yOut,pipeX,spoutX,cylW,cylX,cylBot,cylTop,annX}=G;
-  const water=css('--water'),wsoft=css('--water-soft'),muted=css('--muted'),ink=css('--ink'),acc=css('--accent');
-  // reservoir above the sample, with an overflow that keeps the level constant
-  const rx0=colX-28,rx1=colX+colW+28;
-  c.fillStyle=wsoft;c.fillRect(rx0,yRes,rx1-rx0,colTop-yRes);
-  c.strokeStyle=muted;c.lineWidth=2;c.beginPath();c.moveTo(rx0,yRes-22);c.lineTo(rx0,colTop);c.lineTo(colX,colTop);c.moveTo(colX+colW,colTop);c.lineTo(rx1,colTop);c.lineTo(rx1,yRes-22);c.stroke();
-  line(c,[[rx0,yRes],[rx1,yRes]],water,2);
-  // overflow pipe (left) and supply tap (right)
-  c.strokeStyle=muted;c.lineWidth=4;c.beginPath();c.moveTo(rx0,yRes);c.lineTo(rx0-22,yRes);c.lineTo(rx0-22,yRes+26);c.stroke();
-  c.strokeStyle=muted;c.lineWidth=4;c.beginPath();c.moveTo(rx1+30,yRes-34);c.lineTo(rx1-14,yRes-34);c.lineTo(rx1-14,yRes-26);c.stroke();
-  if(B.flowing){line(c,[[rx1-14,yRes-24],[rx1-14,yRes]],water,3);line(c,[[rx0-22,yRes+28],[rx0-22,yRes+40]],water,2,[3,3]);}
-  c.font=SANS;c.fillStyle=muted;c.textAlign='left';c.textBaseline='bottom';c.fillText('overflow',Math.max(2,rx0-36),yRes-26);
-  c.textAlign='right';c.fillText('supply',rx1+30,yRes-38);
-  // column with grains
-  c.save();c.beginPath();c.rect(colX,colTop,colW,colBot-colTop);c.clip();
-  const splitY=colTop+(colBot-colTop)*(C.lay?C.f:1);
-  c.fillStyle=wsoft;c.fillRect(colX,colTop,colW,colBot-colTop);
+  const {yRes,s,colW,colX,colTop,colBot,yOut,pipeX,spoutX,cylW,cylX,cylBot,cylTop,annX}=G;
+  const water=css('--water'),wsoft=css('--water-soft'),muted=css('--muted'),ink=css('--ink'),acc=css('--accent'),soil=css('--soil'),ssoft=css('--soil-soft');
+  const now=performance.now()/1000,flow=(off)=>{c.setLineDash([7,5]);c.lineDashOffset=-((now*70+off)%12);};
+  const Q=B.flowing?C.Q:0,Qsup=Math.max(40,C.Q*1.25);
+  // the column: a tube open at the top, with standing water above the sample up to the overflow level
+  const top=yRes-26;
+  c.fillStyle=wsoft;c.fillRect(colX,yRes,colW,colBot-yRes);
+  // the sample: grains, then a blue tint over all of it, because the whole sample is saturated
   if(!B.grains)makeGrains();
-  B.grains.forEach(gr=>{const y=colTop+gr.y*(colBot-colTop);const m=(C.lay&&y>splitY)?C.m2:C.m1;
-    c.fillStyle=m.peat?css('--soil'):css('--soil-soft');c.globalAlpha=m.peat?.55:1;c.beginPath();c.arc(colX+gr.x*colW,y,gr.r,0,7);c.fill();
-    c.strokeStyle=css('--soil');c.globalAlpha=.5;c.lineWidth=.6;c.stroke();c.globalAlpha=1;});
-  c.fillStyle=water;B.parts.forEach(p=>{c.beginPath();c.arc(colX+p.x*colW,colTop+p.y*(colBot-colTop),1.8,0,7);c.fill();});
-  if(C.lay)line(c,[[colX,splitY],[colX+colW,splitY]],css('--soil'),1.5,[4,3]);
+  const key=[colX,colTop,colW,colBot,$('b-mat').value,C.lay,$('b-mat2').value,C.f].join();
+  if(!B.tex||B.tex.key!==key){const splitY=colTop+(colBot-colTop)*(C.lay?C.f:1);
+    const L=[grainPaths(C.m1,colX,colTop,colW,splitY-colTop,11)];if(C.lay)L.push(grainPaths(C.m2,colX,splitY,colW,colBot-splitY,23));B.tex={key,L,splitY};}
+  c.save();c.beginPath();c.rect(colX,colTop,colW,colBot-colTop);c.clip();
+  B.tex.L.forEach(g=>{const m=g.m;c.save();c.beginPath();c.rect(...g.box);c.clip();
+    if(m.g<1.3){c.fillStyle=ssoft;c.globalAlpha=.85;c.fillRect(...g.box);c.globalAlpha=.22;c.fillStyle=soil;c.fill(g.fine);}
+    else{c.fillStyle=m.peat?soil:ssoft;c.globalAlpha=m.peat?.55:1;c.fill(g.fine);c.globalAlpha=.5;c.strokeStyle=soil;c.lineWidth=.6;c.stroke(g.fine);}
+    c.globalAlpha=1;c.fillStyle=ssoft;c.fill(g.big);c.strokeStyle=soil;c.lineWidth=1;c.stroke(g.big);c.restore();});
+  c.fillStyle=water;c.globalAlpha=.16;c.fillRect(colX,colTop,colW,colBot-colTop);c.globalAlpha=1;
+  c.fillStyle=water;B.parts.forEach(p=>{c.beginPath();c.arc(colX+p.x*colW,colTop+p.y*(colBot-colTop),2,0,7);c.fill();});
+  if(C.lay)line(c,[[colX,B.tex.splitY],[colX+colW,B.tex.splitY]],soil,1.5,[4,3]);
   c.restore();
-  c.strokeStyle=muted;c.lineWidth=2;c.strokeRect(colX,colTop,colW,colBot-colTop);
+  line(c,[[colX,yRes],[colX+colW,yRes]],water,2);
+  c.strokeStyle=muted;c.lineWidth=2;c.beginPath();c.moveTo(colX,top);c.lineTo(colX,colBot);c.lineTo(colX+colW,colBot);c.lineTo(colX+colW,top);c.stroke();
+  c.font='600 12px "Source Sans 3",sans-serif';c.fillStyle=css('--soil');c.textAlign='left';c.textBaseline='top';
+  c.fillText(C.lay?C.m1.name:'sample',colX+3,colTop+2);if(C.lay)c.fillText(C.m2.name,colX+3,B.tex.splitY+2);
+  // supply tap (top right) and overflow (right wall): the overflow keeps the water level constant.
+  // Whatever the sample cannot take runs out of the overflow, so the overflow stream is thick when the sample is slow.
+  const sx=colX+colW*.72;
+  c.strokeStyle=muted;c.lineWidth=5;c.lineCap='butt';c.setLineDash([]);c.beginPath();c.moveTo(colX+colW+40,top-14);c.lineTo(sx,top-14);c.lineTo(sx,top-4);c.stroke();
+  c.save();c.strokeStyle=water;c.lineWidth=3;flow(0);c.beginPath();c.moveTo(sx,top-2);c.lineTo(sx,yRes);c.stroke();c.restore();
+  const ox=colX+colW;c.strokeStyle=muted;c.lineWidth=5;c.setLineDash([]);c.beginPath();c.moveTo(ox,yRes-1);c.lineTo(ox+20,yRes+3);c.stroke();
+  const ow=4.5*Math.max(.15,1-Q/Qsup),dy=yRes+70;
+  c.save();c.strokeStyle=water;c.lineWidth=ow;flow(3);c.beginPath();c.moveTo(ox+21,yRes+4);c.quadraticCurveTo(ox+27,yRes+10,ox+28,dy-4);c.stroke();c.restore();
+  c.strokeStyle=muted;c.lineWidth=2;c.beginPath();c.moveTo(ox+18,dy-8);c.lineTo(ox+18,dy);c.lineTo(ox+38,dy);c.lineTo(ox+38,dy-8);c.stroke();
+  c.fillStyle=water;c.fillRect(ox+19,dy-3,18,2.5);
+  c.font=SANS;c.fillStyle=muted;c.textAlign='left';c.textBaseline='bottom';c.fillText('supply',colX+colW+6,top-18);
+  c.textBaseline='top';c.fillText('overflow',ox+33,yRes+12);c.fillText('to drain',ox+42,dy-12);
+  // piezometer tubes on the left: water in each tube rises to the hydraulic head at its port
+  const ports=pzPorts(C),ph=B.ph||[C.dh,C.dh,C.dh];
+  ports.forEach((zc,k)=>{const px=colX-14-13*k,py=Math.min(colBot-4,Math.max(colTop+4,colTop+zc*s));
+    c.strokeStyle=muted;c.lineWidth=1.2;c.setLineDash([]);c.beginPath();c.moveTo(colX,py-2.5);c.lineTo(px+3.5,py-2.5);c.lineTo(px+3.5,top);c.moveTo(colX,py+2.5);c.lineTo(px-3.5,py+2.5);c.lineTo(px-3.5,top);c.stroke();
+    const yl=Math.max(top+2,Math.min(py,yOut-ph[k]*s));
+    c.fillStyle=wsoft;c.fillRect(px-2.8,py-2,colX-px+2.8,4.2);c.fillStyle=water;c.fillRect(px-2.8,yl,5.6,py+2-yl);
+    line(c,[[px-5,yl],[px+5,yl]],water,1.5);});
+  c.font='600 12px "Source Sans 3",sans-serif';c.fillStyle=muted;c.textAlign='right';c.textBaseline='bottom';c.fillText('piezometers',colX-2,top-3);
   // outlet tube: down, across, up or down to the outlet level, then out
   const yb=colBot+14;
-  c.lineCap='round';c.lineJoin='round';
+  c.lineCap='round';c.lineJoin='round';c.setLineDash([]);
   c.strokeStyle=muted;c.lineWidth=7;c.beginPath();c.moveTo(colX+colW/2,colBot);c.lineTo(colX+colW/2,yb);c.lineTo(pipeX,yb);c.lineTo(pipeX,yOut);c.lineTo(spoutX,yOut);c.stroke();
   c.strokeStyle=wsoft;c.lineWidth=3.5;c.stroke();
   // tap on the outlet tube
@@ -555,14 +593,14 @@ function drawRig(){
     if(B.flowing){const r=1.5+2.5*Math.cbrt(Math.min(1,B.dropAcc/DROP));c.beginPath();c.arc(spoutX+2,yOut+3+r,r,0,7);c.fill();}
     B.drops.forEach(d=>{c.beginPath();c.arc(spoutX+2,d.y,3,0,7);c.fill();});}
   // dimension: delta h, from the water level above the sample to the outlet
-  c.strokeStyle=acc;c.lineWidth=1;c.setLineDash([3,3]);c.beginPath();c.moveTo(rx1+2,yRes);c.lineTo(annX+8,yRes);c.moveTo(spoutX+8,yOut);c.lineTo(annX+8,yOut);c.stroke();c.setLineDash([]);
+  c.strokeStyle=acc;c.lineWidth=1;c.setLineDash([3,3]);c.beginPath();c.moveTo(ox+34,yRes);c.lineTo(annX+8,yRes);c.moveTo(spoutX+8,yOut);c.lineTo(annX+8,yOut);c.stroke();c.setLineDash([]);
   if(yOut-yRes>14){line(c,[[annX,yRes+1],[annX,yOut-1]],acc,1.8);arrowHead(c,annX,yRes+1,-1,acc,4);arrowHead(c,annX,yOut-1,1,acc,4);}
   c.fillStyle=acc;c.font='600 15px "Source Sans 3",sans-serif';c.textAlign='left';c.textBaseline='middle';
   c.fillText('Δh = '+C.dh+' cm',annX+8,Math.max(yRes+10,(yRes+yOut)/2));
   // dimension: L
-  const lx=colX-12;line(c,[[lx,colTop],[lx,colBot]],ink,1.2);arrowHead(c,lx,colTop,-1,ink,3.5);arrowHead(c,lx,colBot,1,ink,3.5);
+  const lx=colX-14-13*2-12;line(c,[[lx,colTop],[lx,colBot]],ink,1.2);arrowHead(c,lx,colTop,-1,ink,3.5);arrowHead(c,lx,colBot,1,ink,3.5);
   c.save();c.translate(lx-6,(colTop+colBot)/2);c.rotate(-Math.PI/2);c.fillStyle=ink;c.font='600 15px "Source Sans 3",sans-serif';c.textAlign='center';c.textBaseline='bottom';c.fillText('L = '+C.L+' cm',0,0);c.restore();
-  c.fillStyle=muted;c.font=SANS;c.textAlign='left';c.textBaseline='top';c.fillText('A = 78.5 cm²',colX-24,yb+40);
+  c.fillStyle=muted;c.font=SANS;c.textAlign='left';c.textBaseline='top';c.fillText('A = 78.5 cm²',colX,yb+40);
 }
 function drawHead(){const {c,w,h}=fit($('b-head'));const C=cfg();
   const b={x:52,y:12,w:w-70,h:h-56};
@@ -598,10 +636,11 @@ function readB(){const C=cfg();
   const items=[['Volume collected, V',B.vol<10?B.vol.toFixed(3):B.vol.toFixed(1),'mL'],['Time, t',Math.floor(B.watch).toLocaleString('en-GB'),'s'],['Gradient, i = Δh/L',C.i.toFixed(2),'']];
   if($('b-ans').checked){if(C.mys)items.push(['Answers','hidden for mystery samples','']);
     else{items.push(['True Q',sci(C.Q,3),'mL/s']);items.push(['True K<sub>sat</sub>',sci(C.Keff,2),'m/s']);items.push(['Darcy flux q',sci(C.q*86400,2),'m/day']);
-      items.push(['Seepage velocity v',sci(C.q/(C.lay?Math.min(C.m1.n,C.m2.n):C.m1.n)*86400,2),'m/day']);}}
+      if(C.lay)items.push(['Seepage velocity v, upper / lower layer',sci(C.q/C.m1.n*86400,2)+' / '+sci(C.q/C.m2.n*86400,2),'m/day']);
+      else items.push(['Seepage velocity v',sci(C.q/C.m1.n*86400,2),'m/day']);}}
   ro($('b-read'),items);
   const d=C.lay?Math.max(C.m1.d,C.m2.d):C.m1.d,Re=C.q*d/1e-6;
-  $('b-warn').innerHTML=(B.msg?`<p><span class="chip">${B.msg}</span></p>`:'')+(Re>5?`<p><span class="chip">Reynolds number about ${Re.toFixed(0)}: the flow is turbulent, not laminar, so Darcy's law overestimates <i class="m">Q</i> here. Use a smaller head.</span></p>`:'');
+  $('b-warn').innerHTML=(B.msg?`<p><span class="chip">${B.msg}</span></p>`:'')+(Re>5?`<div class="warnbox"><b>Warning: the water is moving too fast for Darcy's law.</b> Darcy's law only holds for slow, smooth flow, where water creeps through the pores in parallel paths (laminar flow). Here the water rushes through the large pores so fast that it starts to swirl into eddies (turbulent flow). The eddies waste energy, so a real sample would pass less water than Darcy's law predicts, and the points on the <i class="m">Q</i> against <i class="m">i</i> graph would bend below the straight line. (Hydraulic engineers check this with the Reynolds number, which compares how fast the water moves with how sticky it is; here it is about ${Re.toFixed(0)}, and Darcy's law holds only below about 1 to 10.) This simulation keeps to Darcy's law, so lower Δ<i class="m">h</i> to get trustworthy results for coarse materials.</div>`:'');
   $('b-watch').textContent=fmtT(B.watch);}
 function renderTable(){const showK=$('b-showK').checked;document.querySelectorAll('.kcol').forEach(e=>e.hidden=!showK);
   $('b-tbody').innerHTML=B.records.map((r,j)=>`<tr><td>${j+1}</td><td>${r.label}</td><td>${r.L}</td><td>${r.dh}</td><td>${r.i.toFixed(3)}</td><td>${r.V<10?r.V.toFixed(3):r.V.toFixed(1)}</td><td>${r.t.toLocaleString('en-GB')}</td><td>${sci(r.Q,3)}</td><td ${showK?'':'hidden'}>${r.mys?'—':sci(r.Q*1e-6*r.L/(AREA*r.dh),2)}</td></tr>`).join('')||'<tr><td colspan="9" class="note" style="text-align:left;font-family:inherit">Press Start, let water collect, then Stop and record.</td></tr>';}
@@ -632,6 +671,8 @@ function tickB(dtReal){const C=cfg();const sp=+$('b-speed').value;const dt=dtRea
     B.parts.forEach(p=>{const m=C.lay&&p.y>C.f?C.m2:C.m1;const v=C.q/m.n*100*pxPerCm;   // px per model second
       const dy=Math.min(.03,v*dt/Math.max(1,G.colBot-G.colTop));p.y+=dy;p.x+=(Math.random()-.5)*Math.min(.02,dy*3);
       if(p.y>1){p.y-=1;p.x=Math.random();}p.x=Math.min(.97,Math.max(.03,p.x));});}
+  // piezometer levels settle towards the new heads within a second or two (real time)
+  const tg=pzTarget(C);if(!B.ph)B.ph=tg.slice();B.ph=B.ph.map((v,k)=>v+(tg[k]-v)*Math.min(1,dtReal*2.5));
   // falling drops (real time)
   const G=geom(1,h);const surf=G.cylBot-Math.min(1,B.vol/CYL)*(G.cylBot-G.cylTop);
   B.drops.forEach(d=>{d.v+=2400*dtReal;d.y+=d.v*dtReal;});B.drops=B.drops.filter(d=>d.y<surf-2);}
